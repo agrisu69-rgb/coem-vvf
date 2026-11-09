@@ -1,0 +1,17 @@
+{
+  "name": "Co.Em. VVF Caserta",
+  "short_name": "Co.Em.",
+  "description": "Turnario, segnalazioni dagli interventi e comunicati stampa per il settore Co.Em. (prototipo dimostrativo)",
+  "lang": "it",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f2f2f4",
+  "theme_color": "#b71c1c",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}

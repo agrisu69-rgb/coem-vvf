@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Co.Em. VVF Caserta</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#b71c1c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Co.Em.">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/icon-192.png">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--red:#b71c1c;--bg:#f2f2f4;--card:#fff;--tx:#17171a;--mu:#666b75;--bd:#dedee4}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#d4d4da;color:var(--tx)}
+#app{max-width:440px;margin:0 auto;min-height:100vh;background:var(--bg);position:relative;padding-bottom:82px}
+header{background:var(--red);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:5;min-height:58px}
+header .t{font-weight:800;font-size:17px;flex:1;min-width:0}
+header small{display:block;font-weight:400;opacity:.9;font-size:12px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hb{background:rgba(255,255,255,.16);border:0;color:#fff;border-radius:12px;padding:8px 11px;font:inherit;font-weight:700;cursor:pointer;position:relative;font-size:15px}
+.hb .cnt{position:absolute;top:-4px;right:-4px;background:#fff;color:var(--red);border-radius:10px;font-size:10px;padding:1px 6px;font-weight:800}
+main{padding:14px;animation:fi .18s ease}
+@keyframes fi{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.07)}
+h2{font-size:19px;margin:4px 0 12px}
+h3{font-size:15px;margin:0 0 8px}
+label{display:block;font-size:13px;font-weight:700;margin:14px 0 5px;color:#333}
+input,select,textarea{width:100%;font:inherit;font-size:16px;padding:12px;border:1.5px solid var(--bd);border-radius:10px;background:#fff;color:var(--tx)}
+input[type=checkbox]{width:22px;height:22px;flex:none;accent-color:var(--red)}
+textarea{min-height:110px;resize:vertical}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:15px;font:inherit;font-size:16px;font-weight:800;background:var(--red);color:#fff;margin-top:12px;cursor:pointer;text-align:center;text-decoration:none}
+.btn.sec{background:#fff;color:var(--red);border:2px solid var(--red)}
+.btn.gray{background:#e8e8ee;color:#222}
+.btn.green{background:#2e7d32}
+.btn.sm{display:inline-block;width:auto;padding:10px 14px;font-size:14px;margin:0;white-space:nowrap}
+.btn:disabled{opacity:.45}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;background:#fff;border-top:1px solid var(--bd);display:flex;z-index:6;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;min-width:0;border:0;background:none;padding:9px 1px 12px;font:inherit;font-size:11px;color:var(--mu);cursor:pointer;position:relative}
+nav button .i{display:block;font-size:21px;line-height:1.25}
+nav button.on{color:var(--red);font-weight:800}
+nav .cnt{position:absolute;top:4px;left:56%;background:var(--red);color:#fff;border-radius:10px;font-size:10px;padding:1px 6px;font-weight:800}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1.5px solid var(--bd);background:#fff;border-radius:20px;padding:9px 14px;font:inherit;font-weight:800;cursor:pointer;color:var(--tx);font-size:14px}
+.chip.on{background:var(--red);border-color:var(--red);color:#fff}
+.seg{display:flex;background:#e6e6eb;border-radius:12px;padding:3px;margin-bottom:12px}
+.seg button{flex:1;border:0;background:none;padding:10px 4px;border-radius:10px;font:inherit;font-weight:700;font-size:13px;cursor:pointer;color:#444}
+.seg button.on{background:#fff;color:var(--red);box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:10px}
+.wd{font-size:11px;text-align:center;color:var(--mu);font-weight:800;padding:4px 0}
+.day{border:0;border-radius:9px;padding:5px 0 4px;min-height:58px;font:inherit;cursor:pointer;position:relative;display:flex;flex-direction:column;align-items:center;gap:1px;background:#f4f4f7;color:#999}
+.day b{font-size:14px;color:var(--tx)}
+.day span{font-size:11px;font-weight:800}
+.day em{font-style:normal;font-size:8.5px;font-weight:700;opacity:.75;letter-spacing:-.2px}
+.st-G{background:#ffe08a}.st-G span,.st-G b{color:#6b4300}
+.st-N{background:#1f3c88}.st-N span,.st-N b,.st-N em{color:#fff}
+.st-S{background:#dfe6fb}.st-S span,.st-S b{color:#2d3a66}
+.st-X{background:#e9d8ff}.st-X span,.st-X b{color:#5b21b6}
+.st-U{background:#d8f0dc}.st-U span,.st-U b{color:#1e5a2a}
+.day.fest b{color:#c62828;text-decoration:underline}.st-N.fest b{color:#ffb3b3}
+.day.today{outline:3px solid var(--red);outline-offset:-2px}
+.dot{position:absolute;top:3px;right:4px;width:8px;height:8px;border-radius:50%;background:#e53935;border:1px solid #fff}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;margin-top:12px;color:#444}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px}
+.hero{background:linear-gradient(135deg,#b71c1c,#7a0f0f);color:#fff}
+.hero .big{font-size:22px;font-weight:800;margin:6px 0}
+.hero .sub{opacity:.85;font-size:13px}
+.row{display:flex;gap:8px;align-items:center}
+.row>input,.row>select{min-width:0}
+.sp{flex:1}
+.muted{color:var(--mu);font-size:13px}
+.badge{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border-radius:20px;background:#eee;color:#333;white-space:nowrap}
+.b-urg,.b-Respinto{background:#ffe1e1;color:#b71c1c}
+.b-Ricevuta,.b-Bozza,.b-attesa{background:#fff1c2;color:#6b4d00}
+.b-In,.b-Approvato{background:#dbe7ff;color:#1f3c88}
+.b-Comunicato,.b-Inviato,.b-Attivo{background:#d8f0dc;color:#1e5a2a}
+.b-Archiviata,.b-Bloccato{background:#eee;color:#555}
+.unr{background:#e53935;color:#fff;border-radius:10px;padding:2px 7px;font-size:11px;font-weight:800}
+.rep{cursor:pointer}
+.who{font-weight:800;font-size:14px;line-height:1.35}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.ph{background:#1a1a1a;border-radius:8px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer}
+.ph img,.ph video{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.ph video{pointer-events:none}
+.ph .x{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.75);color:#fff;border:0;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:16px}
+.ph .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:30px;color:#fff;text-shadow:0 1px 6px #000;pointer-events:none}
+.ph .np{position:absolute;top:4px;left:4px;font-size:16px}
+.ph .ck{position:absolute;bottom:5px;right:5px;width:24px;height:24px;border-radius:6px;background:#fff;border:2px solid var(--red);color:var(--red);font-weight:900;display:flex;align-items:center;justify-content:center;font-size:15px}
+.ph.off{opacity:.4}
+#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:20;align-items:flex-end;justify-content:center}
+#overlay.show{display:flex}
+.sheet{background:#fff;width:100%;max-width:440px;border-radius:18px 18px 0 0;padding:18px 16px 26px;max-height:90vh;overflow:auto;animation:up .2s ease}
+@keyframes up{from{transform:translateY(40px);opacity:.5}to{transform:none;opacity:1}}
+.full{background:#000;position:fixed;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.full img{max-width:100%;max-height:100%;object-fit:contain}
+.full video{max-width:100%;max-height:80vh}
+.full .bar2{position:absolute;top:12px;right:12px;display:flex;gap:8px}
+.full .bar2 button{background:rgba(255,255,255,.2);color:#fff;border:0;border-radius:20px;padding:9px 14px;font:inherit;font-weight:700;cursor:pointer}
+.full .hint{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:#fff;font-size:13px;opacity:.8;padding:0 20px}
+#toast{position:fixed;left:50%;bottom:94px;transform:translateX(-50%);background:#222;color:#fff;padding:12px 18px;border-radius:12px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:40;max-width:90%;text-align:center}
+#toast.show{opacity:1}
+#push{position:fixed;top:8px;left:50%;width:min(420px,94%);transform:translate(-50%,-160%);transition:transform .35s ease;background:#fff;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.25);padding:12px 14px 12px 16px;border-left:5px solid var(--red);z-index:50;cursor:pointer;font-size:14px;visibility:hidden}
+#push.show{transform:translate(-50%,0);visibility:visible}
+#push b{font-size:12px;color:var(--red);display:block;margin-bottom:2px}
+.msgs{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.msg{max-width:82%;padding:9px 12px;border-radius:14px;font-size:14px;line-height:1.35}
+.msg.me{align-self:flex-end;background:var(--red);color:#fff}
+.msg.ot{align-self:flex-start;background:#eceef2}
+.msg small{display:block;opacity:.75;font-size:11px;margin-top:3px}
+.msg img{max-width:100%;max-height:220px;border-radius:8px;display:block;margin-bottom:4px;cursor:pointer;object-fit:contain;background:#000}
+.kv{display:grid;grid-template-columns:118px 1fr;gap:7px 10px;font-size:14px}
+.kv>div:nth-child(odd){color:var(--mu)}
+.checks label{display:flex;align-items:center;gap:10px;font-weight:500;margin:8px 0}
+.logo{width:84px;height:84px;border-radius:24px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:44px;margin:26px auto 10px;box-shadow:0 6px 18px rgba(183,28,28,.35)}
+.center{text-align:center}
+.li{display:flex;align-items:center;gap:8px;padding:11px 0;border-bottom:1px solid var(--bd);font-size:14px}
+.li:last-child{border:0}
+.li .x{border:0;background:#eee;border-radius:8px;padding:6px 10px;cursor:pointer}
+.err{color:#b71c1c;font-size:14px;margin-top:8px;font-weight:600}
+.warn{background:#fff4e5;border-left:4px solid #ef6c00;padding:10px 12px;border-radius:8px;font-size:13px;margin:10px 0;line-height:1.4}
+.ok{background:#e8f5e9;border-left:4px solid #2e7d32;padding:10px 12px;border-radius:8px;font-size:13px;margin:10px 0}
+.sender{background:#fff7f7;border:1.5px dashed #e3a5a5}
+.bars{display:flex;flex-direction:column;gap:5px;margin-top:6px}
+.bar{display:grid;grid-template-columns:34px 1fr 28px;align-items:center;gap:8px;border:0;background:none;padding:2px 0;font:inherit;font-size:13px;cursor:pointer;text-align:left;color:var(--tx)}
+.bar .tr{background:#f1f1f4;border-radius:6px;height:16px;overflow:hidden}
+.bar .fl{background:var(--red);height:100%;border-radius:6px;display:block}
+.bar.on{font-weight:800}.bar.on .fl{background:#7a0f0f}
+.bar b{text-align:right}
+.tot{display:flex;gap:10px}.tot>div{flex:1;background:#fff7f7;border-radius:12px;padding:10px 6px;text-align:center}
+.tot b{display:block;font-size:24px;color:var(--red)}
+.ctext{white-space:pre-wrap;line-height:1.5;font-size:15px}
+.cover{height:150px;background:#1a1a1a;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:10px}
+.cover img{max-width:100%;max-height:100%;object-fit:contain}
+.menu .li{cursor:pointer;font-size:16px;padding:15px 2px}
+.menu .li .i{font-size:20px;width:28px;text-align:center}
+.splash{position:fixed;inset:0;background:linear-gradient(160deg,#c62828,#7a0f0f);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;z-index:60}
+.splash .logo{background:#fff;color:var(--red);margin:0 0 14px}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl td,.tbl th{padding:9px 4px;border-bottom:1px solid var(--bd);text-align:left}
+.tbl th{font-size:12px;color:var(--mu)}
+.tbl td.n,.tbl th.n{text-align:right}
+.prog{height:10px;background:#eee;border-radius:6px;overflow:hidden;margin:14px 0}
+.prog i{display:block;height:100%;background:var(--red);width:0;transition:width .15s}
+.demo{font-size:12px;color:#7a5800;background:#fff3cd;border-radius:10px;padding:8px 10px;text-align:center}
+a.lnk{color:var(--red);font-weight:700}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="overlay" onclick="closeO()"></div>
+<div id="toast"></div>
+<div id="push" onclick="pushTap()"></div>
+<script>
+/* =================== utilità =================== */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const D=t=>new Date(t);
+const hh=t=>D(t).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+const fdt=t=>D(t).toLocaleString('it-IT',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
+const fd=t=>D(t).toLocaleDateString('it-IT');
+const fdl=t=>D(t).toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'});
+function dur(ms){const m=Math.max(0,Math.round(ms/6e4)),h=Math.floor(m/60);return h>=24?`${Math.floor(h/24)} g ${h%24} h`:`${h} h ${m%60} min`}
+function rel(t){const m=Math.round((Date.now()-t)/6e4);if(m<1)return 'adesso';if(m<60)return m+' min fa';const h=Math.round(m/60);if(h<24)return h+' h fa';return fd(t)}
+const MESIL=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+const MESI=MESIL.map(m=>m.slice(0,3));
+const DI=['A','B','C','D'],NO=['D','A','B','C'];
+const TURNI=['A','B','C','D','Giornaliero'];
+const SALTI=[1,2,3,4,5,6,7,8];
+const ENTI=['118','Carabinieri','Polizia di Stato','Polizia Locale','Protezione Civile','ANAS / Ente strade'];
+const STATI=['Ricevuta','In lavorazione','Comunicato pubblicato','Archiviata'];
+const ANN=['Ferie','Permesso','Malattia','Recupero','Straordinario','Vigilanza','Cambio turno'];
+const ASS=['Ferie','Permesso','Malattia','Recupero'];
+const RUOLI={utente:'Vigile',admin:'Amministratore Co.Em.',comandante:'Comandante (approvatore)'};
+const COMUNI={'caserta':[41.0745,14.3327],'aversa':[40.973,14.2065],'marcianise':[41.0336,14.2969],'maddaloni':[41.036,14.382],'mondragone':[41.1153,13.892],'teano':[41.2507,14.0687],'piedimonte matese':[41.3507,14.3718],'santa maria capua vetere':[41.0838,14.256],'capua':[41.106,14.213],'sessa aurunca':[41.24,13.933],'castel volturno':[41.033,13.942],'alife':[41.327,14.332]};
+
+/* =================== archivio foto e video (IndexedDB) =================== */
+const MEDIA={},BLOBS={};let idb=null;
+function idbOpen(){return new Promise(res=>{try{const r=indexedDB.open('coem_media',1);r.onupgradeneeded=()=>r.result.createObjectStore('m');r.onsuccess=()=>res(r.result);r.onerror=()=>res(null)}catch(e){res(null)}})}
+function idbAll(){return new Promise(res=>{if(!idb)return res();try{const rq=idb.transaction('m').objectStore('m').openCursor();rq.onsuccess=()=>{const c=rq.result;if(c){BLOBS[c.key]=c.value;MEDIA[c.key]=URL.createObjectURL(c.value);c.continue()}else res()};rq.onerror=()=>res()}catch(e){res()}})}
+function idbClear(){try{idb&&idb.transaction('m','readwrite').objectStore('m').clear()}catch(e){}}
+function mediaPut(blob){const id='m'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);BLOBS[id]=blob;MEDIA[id]=URL.createObjectURL(blob);try{idb&&idb.transaction('m','readwrite').objectStore('m').put(blob,id)}catch(e){}return id}
+const murl=m=>m.src||MEDIA[m.id]||'';
+function compress(file){return new Promise(res=>{if(!file.type||!file.type.startsWith('image/')||file.type==='image/gif')return res(file);const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{const M=1920,r=Math.min(1,M/Math.max(img.naturalWidth,img.naturalHeight)),w=Math.round(img.naturalWidth*r),h=Math.round(img.naturalHeight*r),c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);c.toBlob(b=>{URL.revokeObjectURL(u);res(b||file)},'image/jpeg',.85)};img.onerror=()=>res(file);img.src=u})}
+async function addFiles(files){const out=[];for(const f of files){const v=(f.type||'').startsWith('video');const b=v?f:await compress(f);out.push({id:mediaPut(b),type:v?'video':'img',name:(f.name||'file').replace(/\.[^.]+$/,'')+(v?'':'.jpg'),by:ME().cognome,t:Date.now(),pub:true})}return out}
+function ph(t,w,h,c){const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c}"/><stop offset="1" stop-color="#1b1b1b"/></linearGradient></defs><rect width="100%" height="100%" fill="url(#g)"/><text x="50%" y="46%" fill="#fff" font-family="sans-serif" font-size="${Math.round(Math.min(w,h)/9)}" text-anchor="middle">📷</text><text x="50%" y="62%" fill="#fff" font-family="sans-serif" font-size="${Math.round(Math.min(w,h)/16)}" text-anchor="middle">${t}</text></svg>`;return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)}
+
+/* =================== dati iniziali =================== */
+function seed(){
+  const now=Date.now(),ago=m=>now-m*6e4;
+  const cfg={sedi:['1A Centrale Caserta','3A Distaccamento di Aversa','4A Distaccamento di Mondragone','5A Distaccamento di Teano','6A Distaccamento di Piedimonte Matese'],
+    qual:['Vigile del fuoco','Vigile del fuoco esperto','Vigile del fuoco coordinatore','Capo squadra','Capo squadra esperto','Capo reparto','Capo reparto esperto','Vice ispettore antincendi','Ispettore antincendi','Ispettore antincendi esperto','Ispettore antincendi coordinatore','Funzionario / Direttivo','Dirigente'],
+    tipi:['Incendio','Incidente stradale','Soccorso a persona','Dissesto statico','Alluvione / allagamento','Ricerca persone','Altro'],
+    evt:['Cerimonia','Santa Barbara','Esercitazione','Formazione','Visita scuole / scolaresche','Manifestazione pubblica','Altro'],
+    refDate:'2026-11-04',salRef:3,oD:8,patrono:'01-20',patronoNome:'San Sebastiano',approvazione:true,vigiliEventi:true,ferieD:14,ferieN:13};
+  const S0=cfg.sedi;
+  const U=(u,nome,cognome,mat,qual,sede,turno,salto,ruolo='utente',stato='Attivo',email='')=>({u,pw:'demo',nome,cognome,matricola:mat,qual,sede,turno,salto,ruolo,stato,email,tel:'',storico:[],creato:ago(60*24*90)});
+  const users=[
+    U('vigile','Mario','Rossi','VF10234','Vigile del fuoco esperto',S0[1],'D',2,'utente','Attivo','m.rossi@esempio.it'),
+    U('coem','Anna','Esposito','VF20871','Ispettore antincendi',S0[0],'Giornaliero',null,'admin','Attivo','coem@esempio.it'),
+    U('comandante','Paolo','Gentile','DIR0012','Dirigente',S0[0],'Giornaliero',null,'comandante','Attivo','comandante@esempio.it'),
+    U('arusso','Antonio','Russo','VF30112','Capo squadra esperto',S0[4],'C',5),
+    U('sferraro','Salvatore','Ferraro','VF30554','Capo squadra',S0[2],'A',2),
+    U('gdecaro','Giuseppe','De Caro','VF41230','Vigile del fuoco',S0[3],'D',7,'utente','In attesa'),
+    U('lmarino','Luca','Marino','VF41877','Vigile del fuoco coordinatore',S0[0],'A',1,'utente','In attesa')];
+  users[5].creato=ago(300);users[6].creato=ago(90);
+  const cogn=['Bianchi','Romano','Colombo','Ricci','Greco','Bruno','Gallo','Conti','De Luca','Mancini','Costa','Giordano','Rizzo','Lombardi','Moretti','Barbieri','Fontana','Santoro','Mariani','Rinaldi','Caruso','Ferrara','Galli','Martini','Leone','Longo','Martinelli','Vitale','Serra','Coppola','De Santis','Marchetti','Parisi','Cirillo','Iovine','Della Valle','Pagano','Capasso','Natale','Sorrentino'];
+  const nomi=['Marco','Luca','Giuseppe','Francesco','Antonio','Alessandro','Andrea','Giovanni','Roberto','Stefano','Vincenzo','Pasquale','Raffaele','Gennaro','Carmine','Ciro','Salvatore','Domenico','Michele','Nicola','Fabio','Emanuele','Giacomo'];
+  let k=0;for(const T of DI)for(let si=0;si<5;si++)for(let j=0;j<2;j++){const q=[0,1,2,1,3,4,0,1][k%8];users.push(U('u'+k,nomi[(k*7)%nomi.length],cogn[k%cogn.length],'VF5'+pad(k)+'7',cfg.qual[q],S0[si],T,1+((k*3)%8)));k++}
+  const snap=x=>{const u=users.find(z=>z.u===x);return{u:u.u,qual:u.qual,cognome:u.cognome,nome:u.nome,sede:u.sede,turno:u.turno}};
+  const M=(t,w,h,c,by,tt)=>({src:ph(t,w,h,c),type:'img',name:t.replace(/[^a-z0-9]+/gi,'_')+'.svg',by,t:tt,pub:true});
+  const reports=[
+    {id:1,author:snap('vigile'),tipo:'Incendio',comune:'Aversa',ind:'Via Roma 120',lat:40.9741,lng:14.2049,dt:ago(40),mezzi:'APS 3A, AS 3A',desc:"Incendio in un appartamento al secondo piano. Due persone accompagnate fuori dall'edificio, fiamme spente e locali messi in sicurezza.",fer:0,sal:2,dec:0,enti:['118','Carabinieri'],foto:[M('Foto 1 – facciata',1200,800,'#c62828','Rossi',ago(38)),M('Foto 2 – scala',800,1200,'#ef6c00','Rossi',ago(38)),M('Foto 3 – interno',1000,1000,'#6d4c41','Rossi',ago(38))],prio:'Urgente',stato:'Ricevuta',chat:[],nota:'',log:[{t:ago(37),text:'Inviata da Rossi'}],comId:null},
+    {id:2,author:snap('arusso'),tipo:'Incidente stradale',comune:'Alife',ind:'SS158, km 12',lat:41.3301,lng:14.3388,dt:ago(190),mezzi:'APS 6A',desc:"Scontro tra due auto. Una persona estratta dalle lamiere e affidata al 118. Carreggiata messa in sicurezza.",fer:1,sal:1,dec:0,enti:['118','Carabinieri','Polizia Locale'],foto:[M('Foto 1 – incidente',1200,800,'#37474f','Russo',ago(185)),M('Foto 2 – mezzi',1200,700,'#455a64','Russo',ago(160))],prio:'Normale',stato:'In lavorazione',chat:[{from:'coem',name:'Esposito',text:'Puoi mandare una foto più da lontano, senza targhe leggibili?',t:ago(170)},{from:'arusso',name:'Russo',text:'Inviata, grazie.',t:ago(160)}],nota:'Attendere conferma 118 sul ferito.',log:[{t:ago(184),text:'Inviata da Russo'},{t:ago(175),text:'Aperta da Esposito'}],comId:null},
+    {id:3,author:snap('sferraro'),tipo:'Soccorso a persona',comune:'Mondragone',ind:'Lungomare',lat:41.1102,lng:13.8801,dt:ago(1500),mezzi:'APS 4A, Nucleo SAF',desc:"Recupero di una persona scivolata sugli scogli. Recuperata con tecniche SAF e consegnata al 118.",fer:1,sal:1,dec:0,enti:['118','Polizia Locale'],foto:[M('Foto 1 – recupero',900,1200,'#00695c','Ferraro',ago(1490))],prio:'Normale',stato:'Comunicato pubblicato',chat:[],nota:'',log:[{t:ago(1490),text:'Inviata da Ferraro'}],comId:null}];
+  const liste=['Stampa locale','Stampa regionale','Agenzie di stampa','TV e radio','Istituzioni'];
+  const P=(nome,testata,email,l)=>({nome,testata,email,tel:'',liste:l,attivo:true});
+  const press=[P('Redazione cronaca','Gazzetta di Terra di Lavoro','cronaca@gazzetta-tdl.esempio.it',['Stampa locale']),P('Maria Iannone','Caserta Notizie Web','redazione@casertanotizie.esempio.it',['Stampa locale']),P('Redazione','Il Volturno Quotidiano','info@ilvolturno.esempio.it',['Stampa locale']),P('Gianni Russo','Aversa In Diretta','news@aversaindiretta.esempio.it',['Stampa locale']),P('Redazione','Litorale Domizio Oggi','redazione@litoraledomizio.esempio.it',['Stampa locale']),P('Redazione Campania','Corriere del Sud Italia','campania@corrieresud.esempio.it',['Stampa regionale']),P('Desk cronaca','Il Mattino di Campania','cronaca@mattinocampania.esempio.it',['Stampa regionale']),P('Desk Napoli','Agenzia Notizie Italia','napoli@ani.esempio.it',['Agenzie di stampa']),P('Desk Sud','ItalPress Sud','sud@italpress-sud.esempio.it',['Agenzie di stampa']),P('Redazione TG','TeleCaserta Uno','tg@telecasertauno.esempio.it',['TV e radio']),P('Redazione GR','Radio Terra di Lavoro','gr@radiotdl.esempio.it',['TV e radio']),P('Ufficio stampa','Prefettura (esempio)','stampa@prefettura.esempio.it',['Istituzioni'])].map((p,i)=>Object.assign(p,{id:i+1}));
+  /* comunicati di esempio */
+  const coms=[];let cid=0;
+  const per={2025:[6,5,8,7,9,13,19,22,11,8,7,9],2026:[9,7,11,8,12,15,21,24,13,10,3]};
+  const cl=['Caserta','Aversa','Marcianise','Maddaloni','Mondragone','Teano','Piedimonte Matese','Santa Maria Capua Vetere','Capua','Sessa Aurunca','Castel Volturno','Alife'];
+  const sedeOf={Caserta:0,Marcianise:0,Maddaloni:0,'Santa Maria Capua Vetere':0,Capua:0,Aversa:1,Mondragone:2,'Castel Volturno':2,'Sessa Aurunca':3,Teano:3,'Piedimonte Matese':4,Alife:4};
+  let n=0;const nw=new Date();
+  for(const y of [2025,2026])per[y].forEach((cnt,m)=>{for(let j=0;j<cnt;j++){n++;const tipo=cfg.tipi[(n*7)%6],com=cl[(n*5)%cl.length],cur=y===nw.getFullYear()&&m===nw.getMonth(),day=cur?1+((j*3)%Math.max(1,nw.getDate()-1)):1+((j*29+n*3)%27),dt=new Date(y,m,day,8+(n%12),(n*13)%60).getTime(),ap=dt+90*6e4,ls=n%3?['Stampa locale','Agenzie di stampa']:['Stampa locale','Stampa regionale','Agenzie di stampa','TV e radio'];
+    coms.push({id:++cid,num:0,anno:y,titolo:`${tipo} a ${com}`,testo:`COMUNICATO STAMPA – Comando Provinciale Vigili del Fuoco di Caserta\n\n${fdl(dt)} – Alle ore ${hh(dt)} i Vigili del Fuoco del Comando di Caserta sono intervenuti a ${com} per un intervento di ${tipo.toLowerCase()}.\n\n(Testo di esempio.)`,dtEv:dt,tipo,comune:com,sede:S0[sedeOf[com]],repId:null,evId:null,media:[],stato:'Inviato',creato:{t:dt+40*6e4,by:'Esposito'},approvato:{t:ap,by:'Gentile'},nota:'',mod:[],invii:[{t:ap+20*6e4,by:'Esposito',n:press.filter(p=>p.liste.some(l=>ls.includes(l))).length,liste:ls,allegati:n%4,oggetto:`Comunicato stampa VVF Caserta – ${tipo} a ${com}`}]})}});
+  const r3=reports[2],c3=coms.filter(c=>c.anno===2026).pop();
+  Object.assign(c3,{repId:3,titolo:'Soccorso a persona a Mondragone',comune:'Mondragone',sede:r3.author.sede,tipo:r3.tipo,dtEv:r3.dt,media:r3.foto.slice(),testo:bozzaTxt(r3,cfg)});
+  c3.creato.t=r3.dt+60*6e4;c3.approvato.t=r3.dt+100*6e4;c3.invii[0].t=r3.dt+110*6e4;r3.comId=c3.id;
+  for(const y of [2025,2026])coms.filter(c=>c.anno===y).sort((a,b)=>a.approvato.t-b.approvato.t).forEach((c,i)=>c.num=i+1);
+  const r2=reports[1];
+  coms.push({id:++cid,num:0,anno:null,titolo:'Incidente stradale ad Alife',testo:bozzaTxt(r2,cfg),dtEv:r2.dt,tipo:r2.tipo,comune:r2.comune,sede:r2.author.sede,repId:2,evId:null,media:r2.foto.slice(0,1),stato:'In approvazione',creato:{t:ago(30),by:'Esposito'},approvato:null,nota:'',mod:[],invii:[]});
+  r2.comId=cid;r2.log.push({t:ago(30),text:'Comunicato inviato in approvazione da Esposito'});
+  const E=(t,d,tipo,luogo,sede,desc,media,minori,lib)=>({titolo:t,dt:d,tipo,luogo,sede,desc,autore:'Esposito',media,minori,lib});
+  const evs=[E('Festa di Santa Barbara 2025',new Date(2025,11,4,10).getTime(),'Santa Barbara','Sede Centrale, Caserta',S0[0],'Celebrazione della patrona con autorità e famiglie.',[M('Santa Barbara – 1',1200,800,'#b71c1c','Esposito',0),M('Santa Barbara – 2',800,1200,'#8e24aa','Esposito',0),M('Santa Barbara – 3',1200,800,'#c62828','Esposito',0),M('Santa Barbara – 4',1000,1000,'#ad1457','Esposito',0)],false,false),
+    E('Esercitazione congiunta in galleria',new Date(2026,4,14,9).getTime(),'Esercitazione','Galleria SS7 Quater',S0[2],'Esercitazione con 118 e Polizia Stradale.',[M('Esercitazione – 1',1200,800,'#37474f','Ferraro',0),M('Esercitazione – 2',1200,700,'#455a64','Ferraro',0)],false,false),
+    E('Pompieropoli con le scuole',new Date(2026,9,3,9).getTime(),'Visita scuole / scolaresche','Piazza Carlo III, Caserta',S0[0],'Percorso didattico per i bambini delle primarie.',[M('Pompieropoli – 1',900,1200,'#ef6c00','Esposito',0),M('Pompieropoli – 2',1200,800,'#f9a825','Esposito',0),M('Pompieropoli – 3',1200,800,'#fb8c00','Rossi',0)],true,false)].map((e,i)=>Object.assign(e,{id:i+1}));
+  const notifs=[];let nid=0;const N=(to,text,link,t)=>notifs.push({id:++nid,to,text,link,t,read:false});
+  ['coem','comandante'].forEach(a=>{N(a,'🆕 URGENTE – Incendio a Aversa · ROSSI Mario, 3A',{k:'rep',id:1},ago(37));N(a,'👤 Nuova richiesta di registrazione: MARINO Luca',{k:'users'},ago(90))});
+  N('comandante','📝 Comunicato da approvare: Incidente stradale ad Alife',{k:'com',id:cid},ago(30));
+  N('arusso','💬 Esposito: Puoi mandare una foto più da lontano, senza targhe leggibili?',{k:'rep',id:2},ago(170));
+  return {v:3,cfg,users,reports,coms,evs,press,liste,notifs,ann:{},ferie:{},drafts:{},lastRead:{arusso:{2:ago(165)},coem:{2:ago(150)}},seq:{rep:3,com:cid,ev:3,press:press.length,n:nid}};
+}
+
+/* =================== salvataggio =================== */
+const KEY='coem_vvf_ce_v3';
+let DB;
+function load(){try{const s=localStorage.getItem(KEY);if(s){const d=JSON.parse(s);if(d&&d.v===3)return d}}catch(e){}return seed()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}}
+let sess=null;try{sess=localStorage.getItem(KEY+'_sess')}catch(e){}
+const S={me:null,view:'login',tab:null,stack:[],err:'',month:null,viewTurno:null,viewSal:null,prio:'Normale',
+  f:{q:'',sede:'',stato:'',per:''},uf:{q:'',sede:'',turno:'',stato:''},comSeg:'arch',comY:new Date().getFullYear(),comM:null,comQ:'',comAll:false,evY:new Date().getFullYear(),rubL:'',rubQ:'',splash:true};
+const ME=()=>DB.users.find(u=>u.u===S.me);
+const isAdm=()=>{const m=ME();return !!m&&(m.ruolo==='admin'||m.ruolo==='comandante')};
+const isCmd=()=>{const m=ME();return !!m&&m.ruolo==='comandante'};
+const admins=()=>DB.users.filter(u=>(u.ruolo==='admin'||u.ruolo==='comandante')&&u.stato==='Attivo').map(u=>u.u);
+const cmds=()=>DB.users.filter(u=>u.ruolo==='comandante'&&u.stato==='Attivo').map(u=>u.u);
+const U=x=>DB.users.find(u=>u.u===x);
+const snap=u=>({u:u.u,qual:u.qual,cognome:u.cognome,nome:u.nome,sede:u.sede,turno:u.turno});
+const authorLine=a=>`${a.qual} – ${a.cognome.toUpperCase()} ${a.nome} – ${a.sede} – ${a.turno==='Giornaliero'?'Giornaliero':'Turno '+a.turno}`;
+const opts=(l,sel)=>l.map(x=>`<option ${x===sel?'selected':''}>${esc(x)}</option>`).join('');
+const badge=s=>`<span class="badge b-${esc(String(s).split(' ')[0])}">${esc(s)}</span>`;
+const sedeS=s=>s.split(' ')[0];
+const sedeC=s=>s.replace('Distaccamento di ','').replace('Centrale ','');
+
+/* =================== avvisi e notifiche =================== */
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),2800)}
+function showSheet(h){const o=$('overlay');o.innerHTML=`<div class="sheet" onclick="event.stopPropagation()">${h}</div>`;o.classList.add('show')}
+function closeO(){const o=$('overlay');o.querySelectorAll('video').forEach(v=>v.pause());o.classList.remove('show');o.innerHTML=''}
+let pushLink=null;
+function notify(to,text,link,self){const l=(Array.isArray(to)?to:[to]).filter((x,i,a)=>x&&a.indexOf(x)===i&&(self||x!==S.me));l.forEach(u=>DB.notifs.push({id:++DB.seq.n,to:u,text,link,t:Date.now(),read:false}));save();if(S.me&&l.includes(S.me)){const n=DB.notifs.filter(x=>x.to===S.me).pop();pushBanner(text,n)}}
+function pushBanner(text,n){const p=$('push');p.innerHTML=`<b>🔔 Co.Em. VVF Caserta · adesso</b>${esc(text)}`;pushLink=n;p.classList.add('show');clearTimeout(p._t);p._t=setTimeout(()=>p.classList.remove('show'),5000);if(navigator.vibrate)try{navigator.vibrate(80)}catch(e){}}
+function pushTap(){$('push').classList.remove('show');if(pushLink)openNotif(pushLink.id)}
+const myNotifs=()=>DB.notifs.filter(n=>n.to===S.me);
+const unreadN=()=>myNotifs().filter(n=>!n.read).length;
+function openNotif(id){const n=DB.notifs.find(x=>x.id===id);if(!n)return;n.read=true;save();closeO();openLink(n.link)}
+function openLink(l){if(!l)return render();if(l.k==='rep'&&DB.reports.find(r=>r.id===l.id))return openRep(l.id);if(l.k==='com'&&DB.coms.find(c=>c.id===l.id))return openV('com',l.id);if(l.k==='ev'&&DB.evs.find(e=>e.id===l.id))return openV('ev',l.id);if(l.k==='users'&&isAdm())return openV('users');render()}
+
+/* =================== download (PDF, CSV, ZIP) =================== */
+let DL=null;
+(async function initDL(){for(let i=0;i<10;i++){try{if(window.claude&&claude.use){DL=await claude.use('downloads');break}}catch(e){break}await new Promise(r=>setTimeout(r,600))}})();
+async function saveFile(name,data){if(!DL){try{const u=URL.createObjectURL(data instanceof Blob?data:new Blob([data])),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),5000);toast('File scaricato: '+name)}catch(e){toast('Download non disponibile')}return}try{await DL.save({filename:name,data});toast('File pronto: '+name)}catch(e){if(e&&e.code==='declined')return;toast('Download non riuscito')}}
+const SCR={};function loadScript(u){return SCR[u]||(SCR[u]=new Promise((res,rej)=>{const s=document.createElement('script');s.src=u;s.onload=res;s.onerror=rej;document.head.appendChild(s)}))}
+const csvq=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+const csv=rows=>'﻿'+rows.map(r=>r.map(csvq).join(';')).join('\r\n');
+function dataUriBlob(u){const [h,b]=u.split(',');const isB=h.includes('base64');const mime=h.slice(5).split(';')[0];if(isB){const s=atob(b),a=new Uint8Array(s.length);for(let i=0;i<s.length;i++)a[i]=s.charCodeAt(i);return new Blob([a],{type:mime})}return new Blob([decodeURIComponent(b)],{type:mime})}
+function mediaBlob(m){if(m.src)return dataUriBlob(m.src);return BLOBS[m.id]||null}
+async function zipMedia(list,name){if(!list.length)return toast('Nessun file da scaricare');toast('Preparo il file ZIP…');try{await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');const z=new JSZip();list.forEach((m,i)=>{const b=mediaBlob(m);if(!b)return;const ext=m.src?'svg':m.type==='video'?((b.type||'').split('/')[1]||'mp4'):'jpg';z.file(pad(i+1)+'_'+(m.name||'file').replace(/\.[^.]+$/,'').replace(/[^\w\-]+/g,'_')+'.'+ext,b)});saveFile(name,await z.generateAsync({type:'blob'}))}catch(e){toast('Impossibile creare lo ZIP')}}
+async function comPdf(id){const c=DB.coms.find(x=>x.id===id);toast('Preparo il PDF…');try{await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');const {jsPDF}=window.jspdf,d=new jsPDF({unit:'mm',format:'a4'});
+  d.setFillColor(183,28,28);d.rect(0,0,210,24,'F');d.setTextColor(255,255,255);d.setFont('helvetica','bold');d.setFontSize(15);d.text('COMUNICATO STAMPA',14,11);d.setFont('helvetica','normal');d.setFontSize(10);d.text('Vigili del Fuoco – Comando di Caserta · Settore Co.Em.',14,18);
+  d.setTextColor(0,0,0);d.setFontSize(10);d.text(c.num?`N. ${c.num}/${c.anno}`:'Bozza',196,33,{align:'right'});d.setFont('helvetica','bold');d.setFontSize(14);let y=42;d.splitTextToSize(c.titolo,182).forEach(l=>{d.text(l,14,y);y+=7});
+  d.setFont('helvetica','normal');d.setFontSize(11);y+=3;d.splitTextToSize(c.testo.replace(/^COMUNICATO STAMPA[^\n]*\n+/,''),182).forEach(l=>{if(y>275){d.addPage();y=20}d.text(l,14,y);y+=5.6});
+  if(c.media.length){y+=4;d.setFontSize(10);d.text(`Foto allegate: ${c.media.length}`,14,y)}
+  d.setFontSize(8);d.setTextColor(120,120,120);d.text('Documento generato con il prototipo dimostrativo dell\'app Co.Em. – non è un atto ufficiale.',14,290);
+  saveFile(`Comunicato_${c.num?c.num+'_'+c.anno:'bozza'}.pdf`,d.output('blob'))}catch(e){toast('Impossibile creare il PDF')}}
+
+/* =================== turni, salti, festivi =================== */
+const cfg=()=>DB.cfg;
+function dn(d){const r=parse(cfg().refDate);return Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-Date.UTC(r.getFullYear(),r.getMonth(),r.getDate()))/864e5)}
+const idx=d=>((dn(d)%4)+4)%4;
+const cyc=(d,T)=>Math.floor((dn(d)-DI.indexOf(T))/4);
+const salGrp=n=>((((n+cfg().salRef-1)%8)+8)%8)+1;
+function st(d,T,g){
+  if(T==='Giornaliero'){const w=d.getDay();return (w===0||w===6||festivi(d.getFullYear())[ymd(d)])?'R':'U'}
+  const i=idx(d);let s='R';
+  if(DI[i]===T)s='G';else if(NO[i]===T)s='N';
+  else{const p=new Date(d.getFullYear(),d.getMonth(),d.getDate()-1);if(NO[idx(p)]===T)s='S'}
+  if(g&&s!=='R'&&salGrp(cyc(d,T))===+g)return s==='S'?'R':'X';
+  return s;
+}
+const oD=()=>cfg().oD,oN=()=>cfg().oD+12;
+const LAB=s=>({G:`Diurno ${pad(oD())}–${pad(oN()%24)}`,N:`Notturno ${pad(oN()%24)}–${pad(oD())}`,S:'Smontante',R:'Riposo',U:'Servizio giornaliero',X:'Salto programmato'})[s];
+const SHORT={G:'G',N:'N',S:'S',R:'R',U:'8h',X:'SP'};
+const salName=(T,g)=>DI.includes(T)&&g?T+g:'—';
+function easter(y){const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=((h+l-7*m+114)%31)+1;return new Date(y,mo-1,da)}
+const FC={};
+function festivi(y){const key=y+'|'+cfg().patrono+cfg().patronoNome;if(FC[key])return FC[key];const f={},a=(m,d,n)=>f[`${y}-${pad(m)}-${pad(d)}`]=n;
+  a(1,1,'Capodanno');a(1,6,'Epifania');a(4,25,'Festa della Liberazione');a(5,1,'Festa del Lavoro');a(6,2,'Festa della Repubblica');a(8,15,'Ferragosto');a(11,1,'Ognissanti');a(12,8,'Immacolata Concezione');a(12,25,'Natale');a(12,26,'Santo Stefano');
+  const e=easter(y),pm=new Date(e);pm.setDate(pm.getDate()+1);f[ymd(e)]='Pasqua';f[ymd(pm)]="Lunedì dell'Angelo (Pasquetta)";
+  const pt=(cfg().patrono||'').split('-').map(Number);if(pt[0]&&pt[1]){const k=`${y}-${pad(pt[0])}-${pad(pt[1])}`;f[k]=f[k]||('Santo Patrono: '+cfg().patronoNome)}
+  return FC[key]=f}
+const annOf=(u,k)=>(DB.ann[u]||{})[k];
+const isAss=(u,k)=>{const a=annOf(u,k);return !!a&&ASS.includes(a.type)};
+function nextShift(u){
+  const m=U(u),T=m.turno,g=m.salto;if(!DI.includes(T))return null;const now=new Date();
+  for(let k=-1;k<12;k++){const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+k),i=idx(d),c=[];
+    if(g&&salGrp(cyc(d,T))===+g)continue;if(isAss(u,ymd(d)))continue;
+    if(DI[i]===T)c.push([new Date(d.getFullYear(),d.getMonth(),d.getDate(),oD()),'G']);
+    if(NO[i]===T)c.push([new Date(d.getFullYear(),d.getMonth(),d.getDate(),oN()),'N']);
+    for(const [s,ty] of c){const e=new Date(s.getTime()+12*36e5);if(now>=s&&now<e)return{now:true,ty,e};if(s>now)return{s,ty}}}
+  return null}
+function nextSalto(T,g){if(!DI.includes(T)||!g)return null;const n=new Date();for(let k=0;k<40;k++){const d=new Date(n.getFullYear(),n.getMonth(),n.getDate()+k);if(st(d,T,g)==='X'&&DI[idx(d)]===T)return d}return null}
+const ferieSp=(u,y)=>((DB.ferie[u]||{})[y])||{d:cfg().ferieD,n:cfg().ferieN};
+function ferieUso(u,y){const m=U(u),a=DB.ann[u]||{};let d=0,n=0;for(const k in a){if(a[k].type!=='Ferie'||!k.startsWith(y+'-'))continue;const s=st(parse(k),m.turno,m.salto);if(s==='G')d++;else if(s==='N')n++}return{d,n}}
+function inServizio(){
+  const now=new Date(),h=now.getHours(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());let T,dS,ty;
+  if(h>=oD()&&h<oN()){T=DI[idx(today)];dS=today;ty='diurno'}else if(h>=oN()){T=NO[idx(today)];dS=today;ty='notturno'}else{dS=new Date(today);dS.setDate(dS.getDate()-1);T=NO[idx(dS)];ty='notturno'}
+  const g=salGrp(cyc(dS,T)),key=ymd(dS),per=DB.users.filter(u=>u.stato==='Attivo'&&u.turno===T);
+  const rows=cfg().sedi.map(s=>{const l=per.filter(u=>u.sede===s);return{s,pres:l.filter(u=>+u.salto!==g&&!isAss(u.u,key)),sal:l.filter(u=>+u.salto===g),ass:l.filter(u=>+u.salto!==g&&isAss(u.u,key))}});
+  return{T,ty,g,rows}}
+
+/* =================== navigazione =================== */
+function render(){
+  if(S.splash){$('app').innerHTML=`<div class="splash"><div class="logo">🔥</div><div style="font-size:22px;font-weight:800">Co.Em. VVF Caserta</div><div style="opacity:.85;margin-top:6px">Turnario · Segnalazioni · Comunicati</div></div>`;return}
+  let h='';
+  if(!S.me){h=S.view==='register'?vRegister():S.view==='waiting'?vWaiting():vLogin()}
+  else{const top=S.stack[S.stack.length-1];h=vHeader()+'<main>'+(top?DET[top.k](top.id):VIEWS[S.tab]())+'</main>'+vNav()}
+  $('app').innerHTML=h;
+}
+function go(t){S.tab=t;S.stack=[];render();scrollTo(0,0)}
+function openV(k,id){S.stack.push({k,id});render();scrollTo(0,0)}
+function back(){S.stack.pop();render();scrollTo(0,0)}
+function setMe(u){S.me=u.u;try{localStorage.setItem(KEY+'_sess',u.u)}catch(e){}S.tab=isAdm()?'adm':'turni';S.comSeg=isCmd()?'gest':'arch';S.stack=[];S.viewTurno=null;S.viewSal=null;const n=new Date();S.month=new Date(n.getFullYear(),n.getMonth(),1);render();scrollTo(0,0);const c=unreadN();if(c)setTimeout(()=>toast(`🔔 Hai ${c} notific${c===1?'a':'he'} da leggere`),400)}
+function logout(){S.me=null;S.view='login';S.err='';try{localStorage.removeItem(KEY+'_sess')}catch(e){}closeO();render();scrollTo(0,0)}
+function vHeader(){
+  const m=ME(),top=S.stack.length,c=unreadN();
+  const sub=isAdm()?RUOLI[m.ruolo]:`${sedeS(m.sede)} · Turno ${m.turno}${m.salto&&DI.includes(m.turno)?' · Salto '+salName(m.turno,m.salto):''}`;
+  return `<header>${top?'<button class="hb" onclick="back()">‹</button>':''}<div class="t">Co.Em. VVF Caserta<small>${esc(m.cognome.toUpperCase())} ${esc(m.nome)} · ${esc(sub)}</small></div><button class="hb" onclick="openV('notif')">🔔${c?`<span class="cnt">${c}</span>`:''}</button></header>`;
+}
+const unreadChat=r=>{const lr=((DB.lastRead[S.me]||{})[r.id])||0;return r.chat.filter(m=>m.from!==S.me&&m.t>lr).length};
+function markRead(r){(DB.lastRead[S.me]=DB.lastRead[S.me]||{})[r.id]=Date.now();DB.notifs.forEach(n=>{if(n.to===S.me&&n.link&&n.link.k==='rep'&&n.link.id===r.id)n.read=true});save()}
+function comDaGestire(){return isCmd()?DB.coms.filter(c=>c.stato==='In approvazione').length:DB.coms.filter(c=>c.stato==='Bozza'||c.stato==='Approvato').length}
+function vNav(){
+  const m=ME();let tabs;
+  if(isAdm()){const nuove=DB.reports.filter(r=>r.stato==='Ricevuta').length+DB.reports.reduce((s,r)=>s+unreadChat(r),0);
+    tabs=[['adm','📥','Segnalaz.',nuove],['com','📰','Comunicati',comDaGestire()],['eventi','🎞️','Eventi',0],['turni','📅','Turni',0],['altro','☰','Altro',DB.users.filter(u=>u.stato==='In attesa').length]]}
+  else{const mie=DB.reports.filter(r=>r.author.u===m.u).reduce((s,r)=>s+unreadChat(r),0);
+    tabs=[['turni','📅','Turni',0],['segnala','📸','Segnala',0],['mie','📋','Le mie',mie]].concat(cfg().vigiliEventi?[['eventi','🎞️','Eventi',0]]:[]).concat([['altro','👤','Profilo',0]])}
+  return '<nav>'+tabs.map(([k,i,l,c])=>`<button class="${S.tab===k&&!S.stack.length?'on':S.tab===k?'on':''}" onclick="go('${k}')"><span class="i">${i}</span>${l}${c?`<span class="cnt">${c}</span>`:''}</button>`).join('')+'</nav>';
+}
+
+/* =================== accesso e registrazione =================== */
+function vLogin(){
+  return `<main><div class="logo">🔥</div><h2 class="center" style="margin-bottom:2px">Co.Em. VVF Caserta</h2><p class="center muted" style="margin-top:0">Turnario · Segnalazioni · Comunicati stampa</p>
+  <div class="card"><label style="margin-top:0">Username</label><input id="lu" autocomplete="username" autocapitalize="none"><label>Password</label><input id="lp" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
+  ${S.err?`<div class="err">${esc(S.err)}</div>`:''}
+  <button class="btn" onclick="login()">Accedi</button><button class="btn sec" onclick="S.view='register';S.err='';render();scrollTo(0,0)">Registrati</button></div>
+  <div class="card"><h3>Accesso rapido (dimostrazione)</h3><p class="muted" style="margin-top:0">Password di tutti gli account: <b>demo</b></p>
+  <button class="btn gray" onclick="setMe(U('vigile'))">👨‍🚒 Vigile – Rossi, 3A Aversa, D/2</button>
+  <button class="btn gray" onclick="setMe(U('coem'))">📰 Amministratore Co.Em. – Esposito</button>
+  <button class="btn gray" onclick="setMe(U('comandante'))">⭐ Comandante – Gentile (approva i comunicati)</button></div>
+  <div class="demo">Versione dimostrativa: i dati restano salvati solo su questo dispositivo.</div></main>`;
+}
+function login(){
+  const u=U($('lu').value.trim().toLowerCase()),p=$('lp').value;
+  if(!u||u.pw!==p){S.err='Username o password non corretti.';return render()}
+  if(u.stato==='In attesa'){S.err='Account in attesa di approvazione da parte di Co.Em.';return render()}
+  if(u.stato==='Bloccato'){S.err='Account bloccato. Contatta Co.Em.';return render()}
+  S.err='';setMe(u);
+}
+function vRegister(){
+  return `<header><button class="hb" onclick="S.view='login';S.err='';render()">‹</button><div class="t">Registrazione</div></header><main><div class="card">
+  <label style="margin-top:0">Username *</label><input id="r_u" autocapitalize="none">
+  <label>Password * (almeno 8 caratteri)</label><input id="r_p" type="password">
+  <label>Conferma password *</label><input id="r_p2" type="password">
+  <label>Email *</label><input id="r_e" type="email" inputmode="email">
+  <label>Cognome *</label><input id="r_c">
+  <label>Nome *</label><input id="r_n">
+  <label>Matricola *</label><input id="r_m" autocapitalize="characters" placeholder="Serve a Co.Em. per verificare l'identità">
+  <label>Qualifica *</label><select id="r_q">${opts(cfg().qual)}</select>
+  <label>Sede di servizio *</label><select id="r_s">${opts(cfg().sedi)}</select>
+  <label>Turno *</label><select id="r_t">${opts(TURNI)}</select>
+  <label>Gruppo di salto programmato</label><select id="r_sal"><option value="">Non lo so / non previsto</option>${SALTI.map(n=>`<option value="${n}">${n}</option>`).join('')}</select>
+  <label>Telefono (facoltativo)</label><input id="r_tel" type="tel">
+  <div class="checks"><label><input type="checkbox" id="r_priv"> Ho letto l'informativa privacy e acconsento al trattamento dei dati *</label></div>
+  ${S.err?`<div class="err">${esc(S.err)}</div>`:''}
+  <button class="btn" onclick="register()">Invia richiesta</button></div></main>`;
+}
+function register(){
+  const v=id=>$(id).value.trim();
+  const d={u:v('r_u').toLowerCase(),pw:$('r_p').value,email:v('r_e'),cognome:v('r_c'),nome:v('r_n'),matricola:v('r_m').toUpperCase(),qual:v('r_q'),sede:v('r_s'),turno:v('r_t'),salto:+v('r_sal')||null,tel:v('r_tel')};
+  let e='';
+  if(!d.u||!d.email||!d.cognome||!d.nome||!d.matricola)e='Compila tutti i campi obbligatori.';
+  else if(!/^[a-z0-9._-]{3,}$/.test(d.u))e='Username: almeno 3 caratteri, solo lettere, numeri e . _ -';
+  else if(U(d.u))e='Username già in uso.';
+  else if(d.pw.length<8)e='La password deve avere almeno 8 caratteri.';
+  else if(d.pw!==$('r_p2').value)e='Le due password non coincidono.';
+  else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email))e='Indirizzo email non valido.';
+  else if(DB.users.some(u=>u.matricola===d.matricola))e='Matricola già registrata.';
+  else if(!$('r_priv').checked)e='Serve il consenso privacy.';
+  if(e){S.err=e;render();scrollTo(0,document.body.scrollHeight);return}
+  DB.users.push(Object.assign(d,{ruolo:'utente',stato:'In attesa',storico:[],creato:Date.now()}));
+  notify(admins(),`👤 Nuova richiesta di registrazione: ${d.cognome.toUpperCase()} ${d.nome} (${d.matricola})`,{k:'users'});
+  S.err='';S.view='waiting';render();scrollTo(0,0);
+}
+function vWaiting(){
+  return `<main><div class="logo">⏳</div><h2 class="center">Richiesta inviata</h2><div class="card"><p style="margin-top:0">Un amministratore Co.Em. verificherà la tua matricola e approverà l'account. Riceverai una notifica quando sarà attivo.</p>
+  <p class="muted">Per provare: entra come Amministratore → Altro → Utenti → Approva, poi accedi con le tue credenziali.</p>
+  <button class="btn" onclick="S.view='login';render()">Torna all'accesso</button></div></main>`;
+}
+
+/* =================== turnario =================== */
+function vTurni(){
+  const me=ME(),T=S.viewTurno||me.turno,G=S.viewSal===null?(T===me.turno?me.salto:null):S.viewSal,now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate()),i=idx(today),tk=ymd(today);
+  const fest=festivi(now.getFullYear())[tk];
+  let h=`<div class="card hero"><div class="sub">Oggi, ${today.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'})}${fest?' · 🎉 '+esc(fest):''}</div><div class="big">Diurno ${DI[i]} · Notturno ${NO[i]}</div><div class="sub" style="margin-bottom:6px">In salto: ${DI[i]}${salGrp(cyc(today,DI[i]))} di giorno · ${NO[i]}${salGrp(cyc(today,NO[i]))} di notte</div>`;
+  const a=annOf(me.u,tk);
+  if(me.turno==='Giornaliero')h+=`<div>Il tuo orario oggi: ${LAB(st(today,'Giornaliero'))}</div>`;
+  else{const ns=nextShift(me.u),nsal=nextSalto(me.turno,me.salto);
+    if(a&&ASS.includes(a.type))h+=`<div>🏖️ Oggi sei in <b>${esc(a.type.toLowerCase())}</b></div>`;
+    if(ns&&ns.now)h+=`<div>🟢 <b>Sei in servizio</b> (${ns.ty==='G'?'diurno':'notturno'}) fino alle ${hh(ns.e)}</div>`;
+    else if(ns)h+=`<div>Prossimo turno: <b>${ns.ty==='G'?'diurno':'notturno'}</b>, ${ns.s.toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'})} alle ${hh(ns.s)}<br><span class="sub">tra ${dur(ns.s-now)}</span></div>`;
+    if(nsal)h+=`<div style="margin-top:6px">🟣 Prossimo salto (${salName(me.turno,me.salto)}): <b>${nsal.toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'})}</b></div>`;
+    else if(!me.salto)h+=`<div class="sub" style="margin-top:6px">Imposta il tuo gruppo di salto nel Profilo</div>`}
+  h+='</div>';
+  if(isAdm())h+=vInServizio();
+  const list=me.turno==='Giornaliero'?['Giornaliero',...DI]:DI;
+  h+=`<div class="card"><b>Visualizza turno</b><div class="chips" style="margin-top:8px">${list.map(t=>`<button class="chip ${t===T?'on':''}" onclick="S.viewTurno='${t}';S.viewSal=null;render()">${t==='Giornaliero'?'Giorn.':t}${t===me.turno?' (tuo)':''}</button>`).join('')}</div>
+  ${DI.includes(T)?`<label>Salto programmato</label><select onchange="S.viewSal=this.value==='all'?'all':(this.value?+this.value:0);render()"><option value="">Nessuno</option><option value="all" ${G==='all'?'selected':''}>Tutti i salti (${T}1–${T}8)</option>${SALTI.map(n=>`<option value="${n}" ${+G===n?'selected':''}>${T}${n}${T===me.turno&&n===me.salto?' (tuo)':''}</option>`).join('')}</select>`:''}</div>`;
+  const m=S.month,y=m.getFullYear(),mo=m.getMonth(),days=new Date(y,mo+1,0).getDate(),off=(new Date(y,mo,1).getDay()+6)%7,mine=T===me.turno,F=festivi(y),GG=G==='all'?null:G;
+  let g=['L','M','M','G','V','S','D'].map(x=>`<div class="wd">${x}</div>`).join('');for(let k=0;k<off;k++)g+='<div></div>';
+  const c={G:0,N:0,X:0,fest:0,ore:0,vig:0},cA={},allS=[];
+  for(let dd=1;dd<=days;dd++){
+    const d=new Date(y,mo,dd),s=st(d,T,GG),key=ymd(d),an=mine?annOf(me.u,key):null,i2=idx(d);
+    if(s==='G')c.G++;if(s==='N')c.N++;if(s==='X')c.X++;if(F[key]&&(s==='G'||s==='N'))c.fest++;
+    if(an){cA[an.type]=(cA[an.type]||0)+1;if(an.ore)c.ore+=+an.ore;if(an.type==='Vigilanza')c.vig++}
+    if(G==='all'&&s==='G')allS.push(`${T}${salGrp(cyc(d,T))}: ${dd} e ${dd+1<=days?dd+1:'1 '+MESIL[(mo+1)%12].toLowerCase()}`);
+    g+=`<button class="day st-${s} ${key===tk?'today':''} ${F[key]?'fest':''}" onclick="openDay('${key}')"><b>${dd}</b><span>${an&&ASS.includes(an.type)?an.type.slice(0,3).toUpperCase():SHORT[s]}</span><em>${DI[i2]}${salGrp(cyc(d,DI[i2]))}-${NO[i2]}${salGrp(cyc(d,NO[i2]))}</em>${an?'<i class="dot"></i>':''}</button>`}
+  h+=`<div class="card"><div class="row"><button class="btn sm gray" onclick="chgM(-1)">‹</button><div class="sp center" style="font-weight:800">${MESIL[mo]} ${y}<div class="muted">Turno ${esc(T)}${G==='all'?' · tutti i salti':G?' · salto '+salName(T,G):''}</div></div><button class="btn sm gray" onclick="chgM(1)">›</button></div>
+  <div class="grid">${g}</div>
+  <div class="legend"><span><i style="background:#ffe08a"></i>G diurno</span><span><i style="background:#1f3c88"></i>N notturno</span><span><i style="background:#dfe6fb"></i>S smontante</span>${GG?'<span><i style="background:#e9d8ff"></i>SP salto</span>':''}<span><i style="background:#f4f4f7;border:1px solid #ccc"></i>R riposo</span><span><b style="color:#c62828;text-decoration:underline">12</b> festivo</span>${mine?'<span><i style="background:#e53935;border-radius:50%"></i>annotazione</span>':''}</div>
+  <p class="muted" style="margin-bottom:0">Sotto ogni giorno: turno diurno e notturno con il gruppo in salto. Tocca un giorno per dettagli${mine?', ferie, straordinari e note':''}.</p></div>`;
+  h+=`<div class="card"><h3>Riepilogo ${MESIL[mo].toLowerCase()} – turno ${esc(T)}</h3><table class="tbl"><tr><td>Turni diurni</td><td class="n"><b>${c.G}</b></td></tr><tr><td>Turni notturni</td><td class="n"><b>${c.N}</b></td></tr>${GG?`<tr><td>Turni in salto</td><td class="n"><b>${c.X}</b></td></tr>`:''}<tr><td>Turni in giorni festivi</td><td class="n"><b>${c.fest}</b></td></tr>
+  ${mine?`<tr><td>Ore di straordinario</td><td class="n"><b>${c.ore}</b></td></tr><tr><td>Vigilanze</td><td class="n"><b>${c.vig}</b></td></tr>${Object.entries(cA).filter(([k])=>k!=='Vigilanza'&&k!=='Straordinario').map(([k,v])=>`<tr><td>${k}</td><td class="n"><b>${v}</b></td></tr>`).join('')}`:''}</table></div>`;
+  if(mine&&DI.includes(me.turno)){const sp=ferieSp(me.u,y),us=ferieUso(me.u,y);
+    h+=`<div class="card"><h3>Ferie ${y}</h3><table class="tbl"><tr><th></th><th class="n">Spettanti</th><th class="n">Usate</th><th class="n">Residue</th></tr><tr><td>Diurni</td><td class="n">${sp.d}</td><td class="n">${us.d}</td><td class="n"><b style="color:${sp.d-us.d<0?'#c62828':'inherit'}">${sp.d-us.d}</b></td></tr><tr><td>Notturni</td><td class="n">${sp.n}</td><td class="n">${us.n}</td><td class="n"><b style="color:${sp.n-us.n<0?'#c62828':'inherit'}">${sp.n-us.n}</b></td></tr></table><p class="muted" style="margin-bottom:0">Segna "Ferie" toccando un giorno di servizio. Le ferie spettanti si cambiano nel Profilo.</p></div>`}
+  if(G==='all')h+=`<div class="card"><h3>Salti del turno ${T} a ${MESIL[mo].toLowerCase()} (${allS.length})</h3>${allS.map(x=>`<div class="li">${x}</div>`).join('')}</div>`;
+  return h;
+}
+function vInServizio(){
+  const s=inServizio(),tot=s.rows.reduce((a,r)=>a+r.pres.length,0);
+  return `<div class="card"><div class="row"><h3 style="margin:0">In servizio ora</h3><span class="sp"></span><span class="badge b-In">Turno ${s.T} · ${s.ty}</span></div><p class="muted" style="margin:6px 0 4px">In salto il gruppo ${s.T}${s.g}. Calcolato dai profili degli utenti registrati.</p>
+  <table class="tbl"><tr><th>Sede</th><th class="n">Presenti</th><th class="n">Salto</th><th class="n">Assenti</th></tr>${s.rows.map((r,i)=>`<tr class="rep" onclick="sedeDet(${i})"><td>${esc(sedeC(r.s))}</td><td class="n"><b>${r.pres.length}</b></td><td class="n">${r.sal.length}</td><td class="n">${r.ass.length}</td></tr>`).join('')}<tr><td><b>Totale</b></td><td class="n"><b>${tot}</b></td><td></td><td></td></tr></table></div>`;
+}
+function sedeDet(i){const s=inServizio(),r=s.rows[i],L=(t,l)=>`<h3 style="margin-top:14px">${t} (${l.length})</h3>${l.length?l.map(u=>`<div class="li">${esc(u.qual)} <b>${esc(u.cognome.toUpperCase())} ${esc(u.nome)}</b></div>`).join(''):'<div class="muted">—</div>'}`;
+  showSheet(`<h2>${esc(r.s)}</h2><p class="muted">Turno ${s.T} ${s.ty}</p>${L('Presenti',r.pres)}${L('In salto',r.sal)}${L('Assenti (ferie, permessi…)',r.ass)}<button class="btn gray" onclick="closeO()">Chiudi</button>`)}
+function chgM(n){S.month=new Date(S.month.getFullYear(),S.month.getMonth()+n,1);render()}
+function openDay(key){
+  const d=parse(key),me=ME(),T=S.viewTurno||me.turno,G=S.viewSal===null?(T===me.turno?me.salto:null):S.viewSal,GG=G==='all'?null:G,i=idx(d),cur=annOf(me.u,key)||{},F=festivi(d.getFullYear())[key];
+  S.dayType=cur.type||null;
+  let h=`<h2 style="text-transform:capitalize;margin-bottom:4px">${d.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</h2>${F?`<div class="warn" style="border-color:#c62828;background:#ffebee">🎉 Festivo: ${esc(F)}</div>`:''}
+  <div class="kv" style="margin-top:10px"><div>${LAB('G')}</div><div><b>Turno ${DI[i]}</b> · salto ${DI[i]}${salGrp(cyc(d,DI[i]))}</div><div>${LAB('N')}</div><div><b>Turno ${NO[i]}</b> · salto ${NO[i]}${salGrp(cyc(d,NO[i]))}</div><div>${GG?'Salto '+salName(T,GG):'Turno '+esc(T)}</div><div><b>${LAB(st(d,T,GG))}</b></div></div>`;
+  if(T===me.turno){
+    h+=`<label>Annotazione</label><div class="chips" id="dchips">${ANN.map(a=>`<button class="chip ${a===S.dayType?'on':''}" data-t="${a}" onclick="pickT('${a}')">${a}</button>`).join('')}</div>
+    <div id="orew" style="display:${S.dayType==='Straordinario'||S.dayType==='Vigilanza'?'':'none'}"><label>Ore</label><input id="d_ore" type="number" min="0" step="0.5" inputmode="decimal" value="${esc(cur.ore||'')}"></div>
+    <label>Note</label><textarea id="d_note" style="min-height:70px" placeholder="es. cambio turno con Bianchi, vigilanza teatro…">${esc(cur.note||'')}</textarea>
+    <button class="btn" onclick="saveDay('${key}')">Salva</button>${cur.type||cur.note?`<button class="btn sec" onclick="delDay('${key}')">Rimuovi annotazione</button>`:''}`}
+  h+=`<button class="btn gray" onclick="closeO()">Chiudi</button>`;
+  showSheet(h);
+}
+function pickT(t){S.dayType=S.dayType===t?null:t;document.querySelectorAll('#dchips .chip').forEach(c=>c.classList.toggle('on',c.dataset.t===S.dayType));$('orew').style.display=(S.dayType==='Straordinario'||S.dayType==='Vigilanza')?'':'none'}
+function saveDay(key){
+  const me=ME(),note=$('d_note').value.trim(),ore=$('d_ore').value;
+  if(!S.dayType&&!note)return delDay(key);
+  if(S.dayType==='Ferie'){const s=st(parse(key),me.turno,me.salto);if(s!=='G'&&s!=='N')return toast('Le ferie si segnano solo sui giorni di servizio (G o N)')}
+  (DB.ann[me.u]=DB.ann[me.u]||{})[key]={type:S.dayType,note,ore:(S.dayType==='Straordinario'||S.dayType==='Vigilanza')?ore:''};
+  save();closeO();render();
+  if(S.dayType==='Ferie'){const y=key.slice(0,4),sp=ferieSp(me.u,y),us=ferieUso(me.u,y);toast(`Ferie salvate · residue: ${sp.d-us.d} diurni, ${sp.n-us.n} notturni`)}else toast('Salvato')}
+function delDay(key){const m=DB.ann[S.me]||{};delete m[key];save();closeO();render();toast('Annotazione rimossa')}
+
+/* =================== nuova segnalazione (con bozza automatica) =================== */
+const draft=()=>DB.drafts[S.me]||(DB.drafts[S.me]={media:[],enti:[],prio:'Normale'});
+function vSegnala(){
+  const n=new Date(),dr=draft(),dl=dr.dt||`${ymd(n)}T${pad(n.getHours())}:${pad(n.getMinutes())}`,inp='oninput="sd()" onchange="sd()"';
+  return `<h2>Nuova segnalazione</h2>
+  <div class="card sender"><div class="muted">Verrà inviata come</div><div class="who">${esc(authorLine(ME()))}</div></div>
+  <div class="card">
+  <label style="margin-top:0">Tipologia *</label><select id="f_tipo" ${inp}><option value="">Scegli…</option>${opts(cfg().tipi,dr.tipo)}</select>
+  <label>Comune *</label><input id="f_com" ${inp} value="${esc(dr.com||'')}" placeholder="es. Aversa" list="comuni"><datalist id="comuni">${Object.keys(COMUNI).map(c=>`<option value="${c.replace(/\b\w/g,x=>x.toUpperCase())}">`).join('')}</datalist>
+  <label>Indirizzo / località</label><div class="row"><input id="f_ind" ${inp} value="${esc(dr.ind||'')}" placeholder="Via, km, località"><button class="btn sm gray" onclick="gps()">📍 GPS</button></div>
+  <div id="gpsi" class="muted" style="margin-top:6px">${dr.lat?`📍 ${dr.lat.toFixed(4)}, ${dr.lng.toFixed(4)} <span>(posizione simulata)</span>`:''}</div>
+  <label>Data e ora</label><input id="f_dt" type="datetime-local" ${inp} value="${dl}">
+  <label>Mezzi e squadre</label><input id="f_mez" ${inp} value="${esc(dr.mez||'')}" placeholder="es. APS 3A, AS 3A">
+  <label>Descrizione *</label><textarea id="f_desc" ${inp} placeholder="Cosa è successo, cosa avete fatto, esito">${esc(dr.desc||'')}</textarea>
+  <label>Persone coinvolte (solo numeri, niente nomi)</label><div class="row"><input id="f_sal" ${inp} value="${esc(dr.sal||'')}" type="number" min="0" inputmode="numeric" placeholder="Salvati"><input id="f_fer" ${inp} value="${esc(dr.fer||'')}" type="number" min="0" inputmode="numeric" placeholder="Feriti"><input id="f_dec" ${inp} value="${esc(dr.dec||'')}" type="number" min="0" inputmode="numeric" placeholder="Deceduti"></div>
+  <label>Altri enti presenti</label><div class="checks">${ENTI.map(e=>`<label><input type="checkbox" class="f_ent" value="${e}" ${dr.enti.includes(e)?'checked':''} onchange="sd()"> ${e}</label>`).join('')}</div>
+  <label>Foto e video (fino a 10)</label><input type="file" accept="image/*,video/*" multiple onchange="addPh(this)">
+  <div id="phs" class="photos">${phHTML()}</div>
+  <div class="warn">⚠️ Niente volti riconoscibili di vittime, targhe leggibili o minori.</div>
+  <label>Priorità</label><div class="chips"><button class="chip ${dr.prio==='Normale'?'on':''}" id="pr_Normale" onclick="setPr('Normale')">Normale</button><button class="chip ${dr.prio==='Urgente'?'on':''}" id="pr_Urgente" onclick="setPr('Urgente')">🔴 Urgente</button></div>
+  <div id="ferr"></div>
+  <button class="btn" onclick="invia()">Invia a Co.Em.</button>
+  <div class="row" style="margin-top:10px"><span id="dstat" class="muted">${dr.t?'💾 Bozza salvata alle '+hh(dr.t):'💾 La bozza si salva da sola mentre scrivi'}</span><span class="sp"></span>${dr.t?'<button class="btn sm gray" onclick="clearDraft()">Svuota</button>':''}</div></div>`;
+}
+function sd(){const dr=draft(),v=id=>$(id)?$(id).value:'';Object.assign(dr,{tipo:v('f_tipo'),com:v('f_com'),ind:v('f_ind'),dt:v('f_dt'),mez:v('f_mez'),desc:v('f_desc'),sal:v('f_sal'),fer:v('f_fer'),dec:v('f_dec'),enti:[...document.querySelectorAll('.f_ent:checked')].map(x=>x.value),t:Date.now()});save();const e=$('dstat');if(e)e.textContent='💾 Bozza salvata alle '+hh(dr.t)}
+function clearDraft(){delete DB.drafts[S.me];save();render();toast('Bozza svuotata')}
+function phHTML(){return draft().media.map((m,i)=>`<div class="ph" onclick="showFull(draft().media[${i}])">${m.type==='video'?`<video src="${murl(m)}" muted preload="metadata"></video><span class="play">▶</span>`:`<img src="${murl(m)}" alt="">`}<button class="x" onclick="event.stopPropagation();rmPh(${i})">×</button></div>`).join('')}
+async function addPh(inp){const dr=draft(),fs=[...inp.files].slice(0,10-dr.media.length);if(inp.files.length>fs.length)toast('Massimo 10 file');inp.value='';if(!fs.length)return;toast('Compressione foto…');dr.media.push(...await addFiles(fs));sd();$('phs').innerHTML=phHTML()}
+function rmPh(i){draft().media.splice(i,1);sd();$('phs').innerHTML=phHTML()}
+function gps(){const dr=draft(),c=COMUNI[($('f_com').value||'').trim().toLowerCase()]||COMUNI.caserta;dr.lat=c[0]+(Math.random()-.5)*.01;dr.lng=c[1]+(Math.random()-.5)*.01;sd();$('gpsi').innerHTML=`📍 ${dr.lat.toFixed(4)}, ${dr.lng.toFixed(4)} <span>(posizione simulata: nell'app vera arriva dal GPS)</span>`}
+function setPr(p){draft().prio=p;sd();['Normale','Urgente'].forEach(x=>$('pr_'+x).classList.toggle('on',x===p))}
+function invia(){
+  sd();const dr=draft(),me=ME();
+  if(!dr.tipo||!dr.com.trim()||!dr.desc.trim()){$('ferr').innerHTML='<div class="err">Compila tipologia, comune e descrizione.</div>';return}
+  const dt=dr.dt?new Date(dr.dt).getTime():Date.now();if(dt>Date.now()+5*6e4){$('ferr').innerHTML='<div class="err">La data non può essere nel futuro.</div>';return}
+  if(!dr.lat){const c=COMUNI[dr.com.trim().toLowerCase()];if(c){dr.lat=c[0];dr.lng=c[1]}}
+  const r={id:++DB.seq.rep,author:snap(me),tipo:dr.tipo,comune:dr.com.trim(),ind:dr.ind.trim(),lat:dr.lat||null,lng:dr.lng||null,dt,mezzi:dr.mez.trim(),desc:dr.desc.trim(),sal:+dr.sal||0,fer:+dr.fer||0,dec:+dr.dec||0,enti:dr.enti,foto:dr.media,prio:dr.prio,stato:'Ricevuta',chat:[],nota:'',log:[{t:Date.now(),text:'Inviata da '+me.cognome}],comId:null};
+  DB.reports.push(r);delete DB.drafts[me.u];
+  notify(admins(),`🆕 ${r.prio==='Urgente'?'URGENTE – ':''}${r.tipo} a ${r.comune} · ${me.cognome.toUpperCase()} ${me.nome}, ${sedeS(me.sede)}`,{k:'rep',id:r.id});
+  save();go('mie');toast('✅ Segnalazione inviata a Co.Em.');
+  const who=me.u;setTimeout(()=>{const x=DB.reports.find(z=>z.id===r.id);if(!x||x.stato!=='Ricevuta')return;x.stato='In lavorazione';x.chat.push({from:'coem',name:'Esposito',text:'Ricevuta, grazie! La prendiamo in carico. Se servono altre foto te lo scriviamo qui.',t:Date.now()});x.log.push({t:Date.now(),text:'Presa in carico da Esposito (risposta simulata della demo)'});notify(who,`💬 Esposito (Co.Em.): Ricevuta, grazie! La prendiamo in carico.`,{k:'rep',id:x.id},true);if(S.me)render()},9000);
+}
+
+/* =================== segnalazioni: elenchi e dettaglio =================== */
+function repCard(r,adm){const u=unreadChat(r);
+  return `<div class="card rep" onclick="openRep(${r.id})">${adm?`<div class="who">${esc(authorLine(r.author))}</div>`:''}
+  <div class="row" style="margin-top:${adm?8:0}px"><b>${esc(r.tipo)}</b><span class="muted">· ${esc(r.comune)}</span><span class="sp"></span>${r.prio==='Urgente'?'<span class="badge b-urg">URGENTE</span>':''}</div>
+  <div class="row muted" style="margin-top:6px">${fdt(r.dt)} · 📷 ${r.foto.length} · 💬 ${r.chat.length}${u?` <span class="unr">${u} nuov${u===1?'o':'i'}</span>`:''}<span class="sp"></span>${badge(r.stato)}</div></div>`}
+function vMie(){const l=DB.reports.filter(r=>r.author.u===S.me).sort((a,b)=>b.dt-a.dt);
+  return `<h2>Le mie segnalazioni</h2>`+(l.length?l.map(r=>repCard(r,false)).join(''):`<div class="card muted">Nessuna segnalazione inviata. Usa “Segnala” per inviarne una.</div>`)}
+function admList(){
+  const f=S.f,q=f.q.trim().toLowerCase(),lim={'oggi':864e5,'7':7*864e5,'30':30*864e5}[f.per];
+  const l=DB.reports.filter(r=>(!f.sede||r.author.sede===f.sede)&&(!f.stato||r.stato===f.stato)&&(!lim||Date.now()-r.dt<lim)&&(!q||(r.tipo+' '+r.comune+' '+r.ind+' '+r.desc+' '+r.author.cognome+' '+r.author.nome+' '+r.mezzi).toLowerCase().includes(q)))
+    .sort((a,b)=>((b.stato==='Ricevuta'&&b.prio==='Urgente')-(a.stato==='Ricevuta'&&a.prio==='Urgente'))||(b.dt-a.dt));
+  return `<p class="muted" style="margin:0 0 8px">${l.length} segnalazion${l.length===1?'e':'i'}</p>`+(l.length?l.map(r=>repCard(r,true)).join(''):'<div class="card muted">Nessuna segnalazione con questi filtri.</div>')}
+function vAdm(){
+  const f=S.f,nuove=DB.reports.filter(r=>r.stato==='Ricevuta').length;
+  return `<h2>Segnalazioni ${nuove?`<span class="badge b-Ricevuta">${nuove} nuov${nuove===1?'a':'e'}</span>`:''}</h2>
+  <div class="card"><input placeholder="🔍 Cerca comune, testo, nome, mezzi…" value="${esc(f.q)}" oninput="S.f.q=this.value;$('alist').innerHTML=admList()">
+  <div class="row" style="margin-top:8px"><select onchange="S.f.per=this.value;$('alist').innerHTML=admList()">${[['','Sempre'],['oggi','Ultime 24 ore'],['7','Ultimi 7 giorni'],['30','Ultimi 30 giorni']].map(([v,t])=>`<option value="${v}" ${f.per===v?'selected':''}>${t}</option>`).join('')}</select><select onchange="S.f.stato=this.value;$('alist').innerHTML=admList()"><option value="">Tutti gli stati</option>${STATI.map(s=>`<option ${s===f.stato?'selected':''}>${s}</option>`).join('')}</select></div>
+  <select style="margin-top:8px" onchange="S.f.sede=this.value;$('alist').innerHTML=admList()"><option value="">Tutte le sedi</option>${cfg().sedi.map(s=>`<option ${s===f.sede?'selected':''}>${esc(s)}</option>`).join('')}</select></div>
+  <div id="alist">${admList()}</div>`}
+function openRep(id){const r=DB.reports.find(x=>x.id===id);if(isAdm()){const t=`Aperta da ${ME().cognome}`,last=r.log[r.log.length-1];if(!last||last.text!==t)r.log.push({t:Date.now(),text:t})}S.unr=unreadChat(r);markRead(r);openV('rep',id)}
+function vRep(id){
+  const r=DB.reports.find(x=>x.id===id),adm=isAdm();if(!r)return '<div class="card">Segnalazione non trovata.</div>';
+  const pers=[r.sal?`${r.sal} salvati`:'',r.fer?`${r.fer} feriti`:'',r.dec?`${r.dec} deceduti`:''].filter(Boolean).join(', ')||'—';
+  const com=r.comId?DB.coms.find(c=>c.id===r.comId):null;
+  let h=`<div class="card"><div class="who">${esc(authorLine(r.author))}</div><div class="row" style="margin-top:8px">${badge(r.stato)}${r.prio==='Urgente'?'<span class="badge b-urg">URGENTE</span>':''}</div></div>
+  <div class="card"><h3>${esc(r.tipo)} – ${esc(r.comune)}</h3><div class="kv">
+  <div>Indirizzo</div><div>${esc(r.ind)||'—'}</div>
+  <div>Posizione</div><div>${r.lat?`<a class="lnk" href="https://www.google.com/maps?q=${r.lat},${r.lng}" target="_blank" rel="noopener">🗺️ Apri in Mappe</a><div class="muted">${(+r.lat).toFixed(4)}, ${(+r.lng).toFixed(4)}</div>`:'—'}</div>
+  <div>Data e ora</div><div>${fdt(r.dt)}</div><div>Mezzi</div><div>${esc(r.mezzi)||'—'}</div>
+  <div>Persone</div><div>${pers}</div><div>Altri enti</div><div>${esc(r.enti.join(', '))||'—'}</div></div>
+  <p style="margin:12px 0 0;line-height:1.45">${esc(r.desc)}</p></div>
+  <div class="card"><div class="row"><h3 style="margin:0">Foto e video (${r.foto.length})</h3><span class="sp"></span>${adm&&r.foto.length?`<button class="btn sm gray" onclick="zipMedia(DB.reports.find(x=>x.id===${r.id}).foto,'Segnalazione_${r.id}_foto.zip')">⬇️ ZIP</button>`:''}</div>
+  <div class="photos">${r.foto.map((m,i)=>tile(m,`showFull(DB.reports.find(x=>x.id===${r.id}).foto[${i}])`)).join('')}</div>
+  ${!adm&&r.foto.length<10?`<label>Aggiungi altre foto o video</label><input type="file" accept="image/*,video/*" multiple onchange="addRepPh(${r.id},this)">`:''}</div>`;
+  if(adm){
+    h+=`<div class="card"><h3>Gestione Co.Em.</h3><label style="margin-top:0">Stato</label><select onchange="setStato(${r.id},this.value)">${opts(STATI,r.stato)}</select>
+    <label>Nota interna (non visibile al vigile)</label><textarea id="nota" style="min-height:70px" onchange="setNota(${r.id},this.value)">${esc(r.nota)}</textarea>
+    ${com?`<button class="btn" onclick="openV('com',${com.id})">📰 Comunicato ${com.num?'n. '+com.num+'/'+com.anno:''} – ${esc(com.stato.toLowerCase())}</button>`:`<button class="btn" onclick="comEditor({rep:${r.id}})">📝 Prepara comunicato stampa</button>`}</div>`}
+  h+=`<div class="card"><h3>${adm?'Chat con '+esc(r.author.cognome):'Chat con Co.Em.'}</h3><div class="msgs">${r.chat.length?r.chat.map((m,i)=>`${S.unr&&i===r.chat.length-S.unr?'<div class="muted center" style="font-size:11px;color:#e53935">— nuovi messaggi —</div>':''}<div class="msg ${m.from===S.me?'me':'ot'}">${m.img?`<img src="${murl(m.img)}" onclick="showFull(DB.reports.find(x=>x.id===${r.id}).chat[${i}].img)">`:''}${esc(m.text)}<small>${esc(m.name)} · ${fdt(m.t)}</small></div>`).join(''):'<div class="muted">Nessun messaggio.</div>'}</div>
+  <div class="row"><label class="btn sm gray" style="margin:0;font-size:18px;padding:9px 12px">📷<input type="file" accept="image/*" style="display:none" onchange="chatImg(${r.id},this)"></label><input id="cm" placeholder="${adm?'Chiedi dettagli o altre foto…':'Scrivi a Co.Em.…'}" onkeydown="if(event.key==='Enter')sendMsg(${r.id})"><button class="btn sm" onclick="sendMsg(${r.id})">Invia</button></div></div>`;
+  if(adm)h+=`<div class="card"><h3>Registro attività</h3>${r.log.slice().reverse().map(l=>`<div class="li"><span class="muted">${fdt(l.t)}</span> ${esc(l.text)}</div>`).join('')}</div>`;
+  S.unr=0;return h;
+}
+function tile(m,click,o={}){const u=murl(m);return `<div class="ph ${o.off?'off':''}" onclick="${click}">${!u?'<span style="color:#aaa;font-size:11px;padding:6px;text-align:center">file non disponibile</span>':m.type==='video'?`<video src="${u}" muted preload="metadata"></video><span class="play">▶</span>`:`<img src="${u}" alt="" loading="lazy">`}${m.pub===false?'<span class="np" title="Non pubblicabile">🚫</span>':''}${o.ck!==undefined?`<span class="ck">${o.ck?'✓':''}</span>`:''}</div>`}
+function showFull(m,actions){if(!m)return;const u=murl(m),o=$('overlay');o.innerHTML=`<div class="full" onclick="closeO()">${m.type==='video'?`<video src="${u}" controls autoplay playsinline onclick="event.stopPropagation()"></video>`:`<img src="${u}" alt="">`}<div class="bar2">${actions||''}<button onclick="closeO()">✕</button></div><div class="hint">${esc(m.name||'')}${m.by?' · caricato da '+esc(m.by):''}${m.pub===false?' · 🚫 non pubblicabile':''}</div></div>`;o.classList.add('show')}
+async function addRepPh(id,inp){const r=DB.reports.find(x=>x.id===id),fs=[...inp.files].slice(0,10-r.foto.length);inp.value='';if(!fs.length)return;r.foto.push(...await addFiles(fs));r.log.push({t:Date.now(),text:`${fs.length} file aggiunti da ${ME().cognome}`});notify(admins(),`📷 ${ME().cognome} ha aggiunto ${fs.length} file a: ${r.tipo} a ${r.comune}`,{k:'rep',id});save();render();toast('File aggiunti')}
+function setStato(id,s){const r=DB.reports.find(x=>x.id===id);r.stato=s;r.log.push({t:Date.now(),text:`Stato → ${s} (${ME().cognome})`});notify(r.author.u,`📋 La tua segnalazione “${r.tipo} a ${r.comune}” ora è: ${s}`,{k:'rep',id});save();render();toast('Stato aggiornato: il vigile riceve una notifica')}
+function setNota(id,v){DB.reports.find(x=>x.id===id).nota=v;save();toast('Nota salvata')}
+function chatTo(r){return isAdm()?[r.author.u]:admins()}
+function sendMsg(id){const t=$('cm').value.trim();if(!t)return;const r=DB.reports.find(x=>x.id===id),me=ME();r.chat.push({from:me.u,name:me.cognome,text:t,t:Date.now()});markRead(r);notify(chatTo(r),`💬 ${me.cognome}: ${t}`,{k:'rep',id});save();render();scrollTo(0,document.body.scrollHeight)}
+async function chatImg(id,inp){const f=inp.files[0];inp.value='';if(!f)return;const r=DB.reports.find(x=>x.id===id),me=ME(),[m]=await addFiles([f]);r.chat.push({from:me.u,name:me.cognome,text:'',img:m,t:Date.now()});markRead(r);notify(chatTo(r),`💬 ${me.cognome} ha inviato una foto`,{k:'rep',id});save();render();scrollTo(0,document.body.scrollHeight)}
+
+/* =================== comunicati: testo, editor, approvazione =================== */
+function bozzaTxt(r,c){
+  const out=['COMUNICATO STAMPA – Comando Provinciale Vigili del Fuoco di Caserta',''],p=[];
+  out.push(`${fdl(r.dt)} – Alle ore ${hh(r.dt)} i Vigili del Fuoco del Comando di Caserta sono intervenuti a ${r.comune}${r.ind?', '+r.ind:''}, per un intervento di ${r.tipo.toLowerCase()}. Sul posto la squadra della sede ${r.author.sede}${r.mezzi?' con '+r.mezzi:''}.`);
+  out.push('',r.desc);
+  if(r.sal)p.push(r.sal==1?'1 persona tratta in salvo':`${r.sal} persone tratte in salvo`);if(r.fer)p.push(r.fer==1?'1 ferito':`${r.fer} feriti`);if(r.dec)p.push(r.dec==1?'1 vittima':`${r.dec} vittime`);
+  if(p.length)out.push('','Bilancio: '+p.join(', ')+'.');if(r.enti.length)out.push('','Sul posto anche: '+r.enti.join(', ')+'.');
+  return out.join('\n')}
+function evTxt(e){return `COMUNICATO STAMPA – Comando Provinciale Vigili del Fuoco di Caserta\n\n${fdl(e.dt)} – ${e.luogo?e.luogo+': ':''}${e.titolo}.\n\n${e.desc||''}`}
+let ED=null;
+function comEditor(o){
+  const c=o.com?DB.coms.find(x=>x.id===o.com):null,r=o.rep?DB.reports.find(x=>x.id===o.rep):c&&c.repId?DB.reports.find(x=>x.id===c.repId):null,e=o.ev?DB.evs.find(x=>x.id===o.ev):c&&c.evId?DB.evs.find(x=>x.id===c.evId):null;
+  const cand=[];const add=m=>{if(m&&!cand.includes(m))cand.push(m)};(c?c.media:[]).forEach(add);(r?r.foto:[]).forEach(add);(e?e.media:[]).forEach(add);
+  const evRisk=e&&e.minori&&!e.lib;
+  ED={id:c?c.id:null,rep:r?r.id:null,ev:e?e.id:null,cand,sel:cand.map(m=>c?c.media.includes(m):(m.pub!==false&&!(evRisk&&e.media.includes(m))))};
+  const blank=!c&&!r&&!e,n=new Date(),dl=`${ymd(n)}T${pad(n.getHours())}:${pad(n.getMinutes())}`;
+  const titolo=c?c.titolo:r?`${r.tipo} a ${r.comune}`:e?e.titolo:'',testo=c?c.testo:r?bozzaTxt(r):e?evTxt(e):'COMUNICATO STAMPA – Comando Provinciale Vigili del Fuoco di Caserta\n\n';
+  showSheet(`<h2>${c?'Modifica comunicato':'Nuovo comunicato'}</h2>${r?`<p class="muted" style="margin-top:0">Dalla segnalazione di ${esc(r.author.cognome)} · testo generato in automatico, rielaboralo.</p>`:e?`<p class="muted" style="margin-top:0">Dall'evento “${esc(e.titolo)}”.</p>`:''}
+  ${blank?`<div class="row"><div class="sp"><label>Tipologia</label><select id="c_tipo">${opts(cfg().tipi.concat(['Evento / iniziativa']))}</select></div></div>
+  <label>Comune</label><input id="c_com" list="comuni2"><datalist id="comuni2">${Object.keys(COMUNI).map(x=>`<option value="${x.replace(/\b\w/g,y=>y.toUpperCase())}">`).join('')}</datalist>
+  <label>Sede competente</label><select id="c_sede">${opts(cfg().sedi)}</select><label>Data e ora dell'intervento</label><input id="c_dt" type="datetime-local" value="${dl}">`:''}
+  <label>Titolo *</label><input id="c_t" value="${esc(titolo)}">
+  <label>Testo *</label><textarea id="c_x" style="min-height:260px">${esc(testo)}</textarea>
+  <label>Foto da allegare</label>${evRisk?'<div class="warn">⚠️ Evento con minori senza liberatorie: le sue foto sono escluse. Selezionale solo se hai le liberatorie.</div>':''}
+  <div class="photos" id="edph">${edPh()}</div>
+  <label>Aggiungi altre foto</label><input type="file" accept="image/*" multiple onchange="edAdd(this)">
+  ${c?`<button class="btn" onclick="edSave('keep')">Salva modifiche</button>`:`${cfg().approvazione&&!isCmd()?`<button class="btn" onclick="edSave('approv')">📤 Invia al Comandante per approvazione</button>`:`<button class="btn green" onclick="edSave('conf')">✅ Conferma e salva in archivio</button>`}<button class="btn sec" onclick="edSave('bozza')">Salva come bozza</button>`}
+  <button class="btn gray" onclick="closeO()">Annulla</button>`);
+}
+function edPh(){return ED.cand.length?ED.cand.map((m,i)=>tile(m,`edTog(${i})`,{ck:ED.sel[i],off:!ED.sel[i]})).join(''):'<div class="muted" style="grid-column:1/-1">Nessuna foto disponibile.</div>'}
+function edTog(i){ED.sel[i]=!ED.sel[i];$('edph').innerHTML=edPh()}
+async function edAdd(inp){const fs=[...inp.files];inp.value='';const l=await addFiles(fs);l.forEach(m=>{ED.cand.push(m);ED.sel.push(true)});$('edph').innerHTML=edPh()}
+function edSave(mode){
+  const t=$('c_t').value.trim(),x=$('c_x').value.trim();if(!t||!x)return toast('Titolo e testo sono obbligatori');
+  const me=ME(),media=ED.cand.filter((m,i)=>ED.sel[i]);let c;
+  if(ED.id){c=DB.coms.find(z=>z.id===ED.id);c.titolo=t;c.testo=x;c.media=media;c.mod.push({t:Date.now(),by:me.cognome});closeO();save();render();return toast('Comunicato aggiornato')}
+  const r=ED.rep?DB.reports.find(z=>z.id===ED.rep):null,e=ED.ev?DB.evs.find(z=>z.id===ED.ev):null;
+  c={id:++DB.seq.com,num:0,anno:null,titolo:t,testo:x,media,repId:r?r.id:null,evId:e?e.id:null,stato:'Bozza',creato:{t:Date.now(),by:me.cognome},approvato:null,nota:'',mod:[],invii:[],
+    dtEv:r?r.dt:e?e.dt:($('c_dt')?new Date($('c_dt').value).getTime():Date.now()),tipo:r?r.tipo:e?'Evento / iniziativa':$('c_tipo').value,comune:r?r.comune:e?(e.luogo||'').split(',').pop().trim()||'Caserta':($('c_com').value.trim()||'—'),sede:r?r.author.sede:e?e.sede:$('c_sede').value};
+  DB.coms.push(c);
+  if(r){r.comId=c.id;if(r.stato==='Ricevuta')r.stato='In lavorazione';r.log.push({t:Date.now(),text:`Comunicato creato da ${me.cognome}`})}
+  if(mode==='approv'){c.stato='In approvazione';notify(cmds(),`📝 Comunicato da approvare: ${t}`,{k:'com',id:c.id});if(r)r.log.push({t:Date.now(),text:'Comunicato inviato in approvazione'})}
+  if(mode==='conf')approva(c,true);
+  save();closeO();S.stack=[];S.tab='com';S.comSeg=mode==='conf'?'arch':'gest';openV('com',c.id);
+  toast(mode==='approv'?'📤 Inviato al Comandante per l’approvazione':mode==='conf'?`✅ Comunicato n. ${c.num}/${c.anno} salvato`:'Bozza salvata');
+}
+function approva(c,silent){
+  const now=new Date(),y=now.getFullYear(),me=ME();c.anno=y;c.num=DB.coms.filter(z=>z.anno===y&&z.num).reduce((m,z)=>Math.max(m,z.num),0)+1;c.stato='Approvato';c.approvato={t:now.getTime(),by:me.cognome};c.nota='';
+  const r=c.repId&&DB.reports.find(z=>z.id===c.repId);if(r)r.log.push({t:now.getTime(),text:`Comunicato n. ${c.num}/${y} approvato da ${me.cognome}`});
+  if(!silent)notify(admins(),`✅ Comunicato n. ${c.num}/${y} approvato: ${c.titolo}. Pronto per l'invio alla stampa.`,{k:'com',id:c.id});
+}
+function doApprova(id){const c=DB.coms.find(x=>x.id===id);approva(c);save();render();toast(`✅ Approvato: n. ${c.num}/${c.anno}`)}
+function respingi(id){showSheet(`<h2>Richiedi modifiche</h2><p class="muted">Il comunicato torna in bozza a Co.Em. con la tua nota.</p><label>Nota per Co.Em. *</label><textarea id="rn" placeholder="es. Togliere il riferimento al numero civico…"></textarea><button class="btn" onclick="doRespingi(${id})">Invia la richiesta</button><button class="btn gray" onclick="closeO()">Annulla</button>`)}
+function doRespingi(id){const n=$('rn').value.trim();if(!n)return toast('Scrivi una nota');const c=DB.coms.find(x=>x.id===id);c.stato='Bozza';c.nota=n;c.mod.push({t:Date.now(),by:'Modifiche richieste da '+ME().cognome});notify(admins(),`↩️ ${ME().cognome} chiede modifiche a “${c.titolo}”: ${n}`,{k:'com',id});save();closeO();render();toast('Richiesta inviata a Co.Em.')}
+function inviaAppr(id){const c=DB.coms.find(x=>x.id===id);if(!cfg().approvazione||isCmd()){approva(c,true);save();render();return toast(`✅ Comunicato n. ${c.num}/${c.anno} confermato`)}c.stato='In approvazione';notify(cmds(),`📝 Comunicato da approvare: ${c.titolo}`,{k:'com',id});save();render();toast('📤 Inviato al Comandante')}
+function delCom(id){showSheet(`<h2>Eliminare la bozza?</h2><button class="btn" onclick="const c=DB.coms.find(x=>x.id===${id});const r=c.repId&&DB.reports.find(z=>z.id===c.repId);if(r)r.comId=null;DB.coms.splice(DB.coms.indexOf(c),1);save();closeO();back();toast('Bozza eliminata')">Elimina</button><button class="btn gray" onclick="closeO()">Annulla</button>`)}
+function copyTxt(t,msg){try{navigator.clipboard.writeText(t).then(()=>toast(msg||'Copiato'),()=>toast('Copia non consentita qui'))}catch(e){toast('Copia non consentita qui')}}
+
+/* =================== comunicati: viste =================== */
+function vCom(){
+  const n=comDaGestire();
+  return `<h2>Comunicati stampa</h2><div class="seg"><button class="${S.comSeg==='arch'?'on':''}" onclick="S.comSeg='arch';render()">Archivio</button><button class="${S.comSeg==='gest'?'on':''}" onclick="S.comSeg='gest';render()">Da gestire${n?` (${n})`:''}</button><button class="${S.comSeg==='rub'?'on':''}" onclick="S.comSeg='rub';render()">Rubrica stampa</button></div>`
+  +(S.comSeg==='gest'?vComGest():S.comSeg==='rub'?vRubrica():vComArch());
+}
+function comRow(c){return `<div class="li rep" onclick="openV('com',${c.id})" style="flex-direction:column;align-items:flex-start;gap:3px"><div class="row" style="width:100%"><b>${c.num?`N. ${c.num}/${c.anno}`:'Senza numero'}</b><span class="muted">· ${fd(c.approvato?c.approvato.t:c.creato.t)}</span><span class="sp"></span>${badge(c.stato)}</div><div>${esc(c.titolo)}</div><div class="muted">${esc(c.sede)}${c.invii.length?` · 📧 ${c.invii.reduce((s,i)=>s+i.n,0)} invii`:''}</div></div>`}
+function vComGest(){
+  const L=(t,l,e)=>`<div class="card"><h3>${t} (${l.length})</h3>${l.length?l.sort((a,b)=>b.creato.t-a.creato.t).map(comRow).join(''):`<div class="muted">${e}</div>`}</div>`;
+  return `<button class="btn" style="margin:0 0 12px" onclick="comEditor({})">+ Nuovo comunicato</button>`
+  +L('⏳ In attesa di approvazione',DB.coms.filter(c=>c.stato==='In approvazione'),isCmd()?'Nessun comunicato da approvare.':'Nessuno.')
+  +L('📝 Bozze',DB.coms.filter(c=>c.stato==='Bozza'),'Nessuna bozza.')
+  +L('📧 Approvati da inviare alla stampa',DB.coms.filter(c=>c.stato==='Approvato'),'Nessuno.');
+}
+const archived=()=>DB.coms.filter(c=>c.num);
+function vComArch(){
+  const Y=S.comY,yl=archived().filter(c=>c.anno===Y),now=new Date(),years=[...new Set([now.getFullYear(),...archived().map(c=>c.anno)])].sort((a,b)=>b-a);
+  const mOf=c=>D(c.approvato.t).getMonth();
+  const byM=MESIL.map((_,m)=>yl.filter(c=>mOf(c)===m).length),mx=Math.max(1,...byM);
+  const fl=S.comM===null?yl:yl.filter(c=>mOf(c)===S.comM),per=S.comM===null?Y:MESIL[S.comM].toLowerCase()+' '+Y;
+  const byT={},byS={};fl.forEach(c=>{byT[c.tipo]=(byT[c.tipo]||0)+1;byS[c.sede]=(byS[c.sede]||0)+1});
+  const thisM=Y===now.getFullYear()?byM[now.getMonth()]:null;
+  return `<div class="card"><div class="chips">${years.map(y=>`<button class="chip ${y===Y?'on':''}" onclick="S.comY=${y};S.comM=null;S.comAll=false;render()">${y}</button>`).join('')}</div>
+  <div class="tot" style="margin-top:12px"><div><b>${yl.length}</b><span class="muted">nel ${Y}</span></div>${S.comM!==null?`<div><b>${byM[S.comM]}</b><span class="muted">a ${MESIL[S.comM].toLowerCase()}</span></div>`:thisM!==null?`<div><b>${thisM}</b><span class="muted">a ${MESIL[now.getMonth()].toLowerCase()}</span></div>`:`<div><b>${(yl.length/12).toFixed(1).replace('.',',')}</b><span class="muted">media mensile</span></div>`}<div><b>${fl.reduce((s,c)=>s+c.invii.reduce((a,i)=>a+i.n,0),0)}</b><span class="muted">email inviate</span></div></div>
+  <label>Mese</label><select onchange="S.comM=this.value===''?null:+this.value;S.comAll=false;render()"><option value="">Tutto l'anno</option>${MESIL.map((m,i)=>`<option value="${i}" ${S.comM===i?'selected':''}>${m} ${Y} (${byM[i]})</option>`).join('')}</select>
+  <button class="btn" onclick="comEditor({})">+ Nuovo comunicato</button></div>
+  <div class="card"><h3>Comunicati per mese – ${Y}</h3><div class="bars">${byM.map((n,m)=>`<button class="bar ${S.comM===m?'on':''}" onclick="S.comM=${S.comM===m?'null':m};S.comAll=false;render()"><span>${MESI[m]}</span><span class="tr"><span class="fl" style="width:${n/mx*100}%"></span></span><b>${n}</b></button>`).join('')}</div></div>
+  <div class="card"><h3>Per sede – ${per}</h3>${cfg().sedi.map(s=>`<div class="li"><span class="sp">${esc(s)}</span><b>${byS[s]||0}</b></div>`).join('')}</div>
+  <div class="card"><h3>Per tipologia – ${per}</h3>${Object.entries(byT).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`<div class="li"><span class="sp">${esc(t)}</span><b>${n}</b></div>`).join('')||'<div class="muted">—</div>'}</div>
+  <div class="card"><h3>${S.comM===null?'Ultimi comunicati del '+Y:'Comunicati di '+per}</h3><input placeholder="🔍 Cerca per comune, tipologia, testo…" value="${esc(S.comQ)}" oninput="S.comQ=this.value;$('clist').innerHTML=comList()"><div id="clist">${comList()}</div></div>
+  <div class="card"><h3>Esporta</h3><button class="btn gray" style="margin-top:0" onclick="expComList()">⬇️ Elenco comunicati ${Y} (Excel/CSV)</button><button class="btn gray" onclick="expComStat()">⬇️ Statistiche ${Y} (Excel/CSV)</button><button class="btn gray" onclick="copyRiep()">Copia riepilogo</button></div>`;
+}
+function comList(){
+  const q=S.comQ.trim().toLowerCase(),mOf=c=>D(c.approvato.t).getMonth();
+  const l=archived().filter(c=>c.anno===S.comY&&(S.comM===null||mOf(c)===S.comM)&&(!q||(c.titolo+' '+c.testo+' '+c.comune+' '+c.tipo+' '+c.sede).toLowerCase().includes(q))).sort((a,b)=>b.num-a.num);
+  const many=!q&&S.comM===null&&!S.comAll&&l.length>15,ls=many?l.slice(0,15):l;
+  return l.length?ls.map(comRow).join('')+(many?`<button class="btn sec" onclick="S.comAll=true;$('clist').innerHTML=comList()">Mostra tutti (${l.length})</button>`:''):'<div class="muted" style="margin-top:10px">Nessun comunicato trovato.</div>'}
+function expComList(){const Y=S.comY,l=archived().filter(c=>c.anno===Y).sort((a,b)=>a.num-b.num);saveFile(`Comunicati_${Y}.csv`,csv([['Numero','Data','Titolo','Tipologia','Comune','Sede','Approvato da','Invii email','Testo']].concat(l.map(c=>[c.num+'/'+c.anno,fdt(c.approvato.t),c.titolo,c.tipo,c.comune,c.sede,c.approvato.by,c.invii.reduce((s,i)=>s+i.n,0),c.testo]))))}
+function expComStat(){const Y=S.comY,yl=archived().filter(c=>c.anno===Y),rows=[['Comunicati stampa '+Y],[],['Mese','Numero']];MESIL.forEach((m,i)=>rows.push([m,yl.filter(c=>D(c.approvato.t).getMonth()===i).length]));rows.push(['Totale',yl.length],[],['Sede','Numero']);cfg().sedi.forEach(s=>rows.push([s,yl.filter(c=>c.sede===s).length]));rows.push([],['Tipologia','Numero']);[...new Set(yl.map(c=>c.tipo))].forEach(t=>rows.push([t,yl.filter(c=>c.tipo===t).length]));saveFile(`Statistiche_comunicati_${Y}.csv`,csv(rows))}
+function copyRiep(){const Y=S.comY,yl=archived().filter(c=>c.anno===Y);copyTxt(`Comunicati stampa Co.Em. VVF Caserta – ${Y}\nTotale: ${yl.length}\n`+MESIL.map((m,i)=>`${m}: ${yl.filter(c=>D(c.approvato.t).getMonth()===i).length}`).join('\n'),'Riepilogo copiato')}
+function vComD(id){
+  const c=DB.coms.find(x=>x.id===id);if(!c)return '<div class="card">Comunicato non trovato.</div>';const cmd=isCmd(),r=c.repId&&DB.reports.find(z=>z.id===c.repId),e=c.evId&&DB.evs.find(z=>z.id===c.evId);
+  let act='';
+  if(c.stato==='Bozza')act=`<button class="btn" onclick="comEditor({com:${c.id}})">✏️ Modifica</button>${cfg().approvazione&&!cmd?`<button class="btn sec" onclick="inviaAppr(${c.id})">📤 Invia al Comandante per approvazione</button>`:`<button class="btn green" onclick="inviaAppr(${c.id})">✅ Conferma e salva in archivio</button>`}<button class="btn gray" onclick="delCom(${c.id})">Elimina bozza</button>`;
+  else if(c.stato==='In approvazione')act=cmd?`<button class="btn green" onclick="doApprova(${c.id})">✅ Approva</button><button class="btn sec" onclick="respingi(${c.id})">↩️ Richiedi modifiche</button><button class="btn gray" onclick="comEditor({com:${c.id}})">✏️ Correggi tu il testo</button>`:`<div class="warn">⏳ In attesa dell'approvazione del Comandante. Riceverai una notifica.</div><button class="btn gray" onclick="comEditor({com:${c.id}})">✏️ Modifica</button>`;
+  else act=`<button class="btn" onclick="mailSheet(${c.id})">📧 ${c.stato==='Inviato'?'Invia di nuovo / ad altri':'Invia alla stampa'}</button><button class="btn sec" onclick="comEditor({com:${c.id}})">✏️ Rielabora testo</button><div class="row" style="margin-top:12px"><button class="btn gray sp" style="margin:0" onclick="comPdf(${c.id})">⬇️ PDF</button><button class="btn gray sp" style="margin:0" onclick="copyTxt(DB.coms.find(x=>x.id===${c.id}).titolo+'\\n\\n'+DB.coms.find(x=>x.id===${c.id}).testo,'Testo copiato')">Copia testo</button>${c.media.length?`<button class="btn gray sp" style="margin:0" onclick="zipMedia(DB.coms.find(x=>x.id===${c.id}).media,'Comunicato_${c.num}_${c.anno}_foto.zip')">Foto ZIP</button>`:''}</div>`;
+  return `<div class="card"><div class="row"><b style="font-size:17px">${c.num?`Comunicato n. ${c.num}/${c.anno}`:'Comunicato'}</b><span class="sp"></span>${badge(c.stato)}</div>
+  <h3 style="margin-top:8px">${esc(c.titolo)}</h3>${c.nota?`<div class="warn">↩️ <b>Modifiche richieste:</b> ${esc(c.nota)}</div>`:''}
+  <div class="kv"><div>Intervento</div><div>${fdt(c.dtEv)}</div><div>Tipologia</div><div>${esc(c.tipo)}</div><div>Comune</div><div>${esc(c.comune)}</div><div>Sede</div><div>${esc(c.sede)}</div><div>Creato</div><div>${fdt(c.creato.t)} da ${esc(c.creato.by)}</div>${c.approvato?`<div>Approvato</div><div>${fdt(c.approvato.t)} da ${esc(c.approvato.by)}</div>`:''}</div></div>
+  <div class="card"><div class="ctext">${esc(c.testo)}</div></div>
+  ${c.media.length?`<div class="card"><h3>Foto allegate (${c.media.length})</h3><div class="photos">${c.media.map((m,i)=>tile(m,`showFull(DB.coms.find(x=>x.id===${c.id}).media[${i}])`)).join('')}</div></div>`:''}
+  <div class="card" style="padding-top:2px">${act}${r?`<button class="btn gray" onclick="openRep(${r.id})">Apri la segnalazione originale</button>`:''}${e?`<button class="btn gray" onclick="openV('ev',${e.id})">Apri l'evento</button>`:''}</div>
+  ${c.invii.length?`<div class="card"><h3>Invii alla stampa</h3>${c.invii.slice().reverse().map((v,i)=>`<div class="li rep" onclick="invioDet(${c.id},${c.invii.length-1-i})" style="flex-direction:column;align-items:flex-start;gap:2px"><div><b>📧 ${v.n} destinatari</b> <span class="muted">· ${fdt(v.t)} · ${esc(v.by)}</span></div><div class="muted">${esc((v.liste||[]).join(', ')||'Contatti scelti')}${v.allegati?` · ${v.allegati} foto`:''}</div></div>`).join('')}</div>`:''}
+  ${c.mod.length?`<div class="card"><h3>Modifiche</h3>${c.mod.slice().reverse().map(m=>`<div class="li"><span class="muted">${fdt(m.t)}</span> ${esc(m.by)}</div>`).join('')}</div>`:''}`;
+}
+function invioDet(id,i){const v=DB.coms.find(x=>x.id===id).invii[i];showSheet(`<h2>Invio del ${fdt(v.t)}</h2><div class="kv"><div>Inviato da</div><div>${esc(v.by)}</div><div>Oggetto</div><div>${esc(v.oggetto||'')}</div><div>Liste</div><div>${esc((v.liste||[]).join(', ')||'—')}</div><div>Allegati</div><div>${v.allegati||0} foto</div></div>${v.dest?`<h3 style="margin-top:14px">Destinatari (${v.dest.length})</h3>${v.dest.map(d=>`<div class="li">${esc(d)}</div>`).join('')}`:`<p class="muted">${v.n} destinatari.</p>`}<button class="btn gray" onclick="closeO()">Chiudi</button>`)}
+
+/* =================== mailing list stampa =================== */
+let ML=null;
+function mailSheet(id){const c=DB.coms.find(x=>x.id===id);ML={id,liste:new Set(['Stampa locale','Agenzie di stampa']),add:new Set(),off:new Set(),att:c.media.map(m=>m.pub!==false),ogg:`Comunicato stampa VVF Caserta – ${c.titolo}`,open:false};renderMail()}
+function mlDest(){const s=new Map();DB.press.filter(p=>p.attivo&&!ML.off.has(p.id)&&(ML.add.has(p.id)||p.liste.some(l=>ML.liste.has(l)))).forEach(p=>{if(!s.has(p.email.toLowerCase()))s.set(p.email.toLowerCase(),p)});return [...s.values()]}
+function renderMail(){
+  const c=DB.coms.find(x=>x.id===ML.id),dest=mlDest(),nA=ML.att.filter(Boolean).length,mt=`mailto:?bcc=${encodeURIComponent(dest.map(p=>p.email).join(','))}&subject=${encodeURIComponent(ML.ogg)}&body=${encodeURIComponent((c.titolo+'\n\n'+c.testo).slice(0,1500))}`;
+  showSheet(`<h2>Invia alla stampa</h2><p class="muted" style="margin-top:0">Comunicato ${c.num?'n. '+c.num+'/'+c.anno:''} · ${esc(c.titolo)}</p>
+  <label>Liste di distribuzione</label><div class="checks">${DB.liste.map((l,i)=>{const n=DB.press.filter(p=>p.attivo&&p.liste.includes(l)).length;return `<label><input type="checkbox" ${ML.liste.has(l)?'checked':''} onchange="mlL(${i},this.checked)"> ${esc(l)} <span class="muted">(${n})</span></label>`}).join('')}</div>
+  <button class="btn gray" style="margin-top:6px" onclick="ML.open=!ML.open;mlKeep();renderMail()">${ML.open?'▲ Nascondi':'▼ Scegli'} singoli contatti</button>
+  ${ML.open?`<div class="checks">${DB.press.filter(p=>p.attivo).map(p=>{const inL=p.liste.some(l=>ML.liste.has(l)),on=!ML.off.has(p.id)&&(inL||ML.add.has(p.id));return `<label><input type="checkbox" ${on?'checked':''} onchange="mlP(${p.id},this.checked)"> <span><b>${esc(p.testata)}</b><br><span class="muted">${esc(p.nome)} · ${esc(p.email)}</span></span></label>`}).join('')}</div>`:''}
+  <label>Oggetto</label><input id="m_o" value="${esc(ML.ogg)}">
+  <label>Foto allegate (${nA}/${c.media.length})</label>${c.media.length?`<div class="photos">${c.media.map((m,i)=>tile(m,`ML.att[${i}]=!ML.att[${i}];mlKeep();renderMail()`,{ck:ML.att[i],off:!ML.att[i]})).join('')}</div>${c.media.some(m=>m.pub===false)?'<div class="warn">🚫 Alcune foto sono segnate come non pubblicabili e sono escluse.</div>':''}`:'<div class="muted">Nessuna foto nel comunicato.</div>'}
+  <div class="ok">📨 Invio in copia nascosta (CCN): i giornalisti non vedono gli altri indirizzi. Nell'app vera l'email parte dall'indirizzo dell'ufficio Co.Em.</div>
+  <div id="mprog"></div>
+  <button class="btn" id="m_send" ${dest.length?'':'disabled'} onclick="mlSend()">📧 Invia a ${dest.length} destinatar${dest.length===1?'io':'i'}</button>
+  <a class="btn sec" href="${mt}" target="_blank" rel="noopener">Apri nel programma di posta</a>
+  <button class="btn gray" onclick="mlKeep();copyTxt(mlDest().map(p=>p.email).join('; '),'Indirizzi copiati')">Copia indirizzi</button>
+  <button class="btn gray" onclick="closeO()">Annulla</button>`);
+}
+function mlKeep(){const o=$('m_o');if(o)ML.ogg=o.value}
+function mlL(i,on){const l=DB.liste[i];mlKeep();on?ML.liste.add(l):ML.liste.delete(l);renderMail()}
+function mlP(id,on){mlKeep();if(on){ML.off.delete(id);ML.add.add(id)}else{ML.add.delete(id);ML.off.add(id)}renderMail()}
+function mlSend(){
+  mlKeep();const c=DB.coms.find(x=>x.id===ML.id),dest=mlDest(),me=ME();if(!dest.length)return;
+  $('m_send').disabled=true;$('mprog').innerHTML=`<div class="prog"><i id="pb"></i></div><div class="muted center" id="pt">Invio in corso…</div>`;
+  let k=0;const iv=setInterval(()=>{k++;$('pb').style.width=(k/dest.length*100)+'%';$('pt').textContent=`Invio ${k}/${dest.length}: ${dest[k-1].testata}`;if(k>=dest.length){clearInterval(iv);
+    c.invii.push({t:Date.now(),by:me.cognome,n:dest.length,dest:dest.map(p=>`${p.testata} <${p.email}>`),liste:[...ML.liste],allegati:ML.att.filter(Boolean).length,oggetto:ML.ogg});c.stato='Inviato';
+    const r=c.repId&&DB.reports.find(z=>z.id===c.repId);if(r){r.stato='Comunicato pubblicato';r.log.push({t:Date.now(),text:`Comunicato inviato a ${dest.length} destinatari da ${me.cognome}`});notify(r.author.u,`📰 Il comunicato sul tuo intervento “${r.tipo} a ${r.comune}” è stato inviato alla stampa. Grazie!`,{k:'rep',id:r.id})}
+    save();setTimeout(()=>{closeO();render();toast(`✅ Inviato a ${dest.length} destinatari`)},400)}},Math.max(60,Math.min(250,2500/dest.length)));
+}
+function vRubrica(){
+  const q=S.rubQ;
+  return `<div class="card"><div class="chips"><button class="chip ${!S.rubL?'on':''}" onclick="S.rubL='';render()">Tutti (${DB.press.length})</button>${DB.liste.map((l,i)=>`<button class="chip ${S.rubL===l?'on':''}" onclick="S.rubL=DB.liste[${i}];render()">${esc(l)} (${DB.press.filter(p=>p.liste.includes(l)).length})</button>`).join('')}</div>
+  <input style="margin-top:10px" placeholder="🔍 Cerca testata, nome, email…" value="${esc(q)}" oninput="S.rubQ=this.value;$('rlist').innerHTML=rubList()">
+  <div class="row" style="margin-top:10px"><button class="btn sp" style="margin:0" onclick="pEdit(0)">+ Contatto</button><button class="btn sec sp" style="margin:0" onclick="newLista()">+ Lista</button></div></div>
+  <div class="card" id="rlist">${rubList()}</div>
+  <div class="card"><h3>Importa / esporta</h3><p class="muted" style="margin-top:0">CSV con colonne: nome; testata; email; liste (separate da |)</p><label class="btn gray" style="margin-top:0">📥 Importa da file CSV<input type="file" accept=".csv,text/csv" style="display:none" onchange="impCsv(this)"></label><button class="btn gray" onclick="expRub()">⬇️ Esporta rubrica (CSV)</button></div>`;
+}
+function rubList(){const q=S.rubQ.trim().toLowerCase(),l=DB.press.filter(p=>(!S.rubL||p.liste.includes(S.rubL))&&(!q||(p.nome+' '+p.testata+' '+p.email).toLowerCase().includes(q))).sort((a,b)=>a.testata.localeCompare(b.testata));
+  return l.length?l.map(p=>`<div class="li rep" onclick="pEdit(${p.id})" style="flex-direction:column;align-items:flex-start;gap:2px;${p.attivo?'':'opacity:.5'}"><div><b>${esc(p.testata)}</b>${p.attivo?'':' <span class="badge">disattivato</span>'}</div><div class="muted">${esc(p.nome)} · ${esc(p.email)}</div><div class="muted">${esc(p.liste.join(', '))}</div></div>`).join(''):'<div class="muted">Nessun contatto.</div>'}
+function pEdit(id){const p=id?DB.press.find(x=>x.id===id):{nome:'',testata:'',email:'',tel:'',liste:S.rubL?[S.rubL]:[],attivo:true};
+  showSheet(`<h2>${id?'Modifica contatto':'Nuovo contatto'}</h2><label>Testata *</label><input id="p_te" value="${esc(p.testata)}"><label>Nome / redazione</label><input id="p_no" value="${esc(p.nome)}"><label>Email *</label><input id="p_em" type="email" value="${esc(p.email)}"><label>Telefono</label><input id="p_tl" type="tel" value="${esc(p.tel)}">
+  <label>Liste</label><div class="checks">${DB.liste.map((l,i)=>`<label><input type="checkbox" class="p_li" value="${i}" ${p.liste.includes(l)?'checked':''}> ${esc(l)}</label>`).join('')}</div>
+  <div class="checks"><label><input type="checkbox" id="p_at" ${p.attivo?'checked':''}> Attivo (riceve i comunicati)</label></div>
+  <button class="btn" onclick="pSave(${id})">Salva</button>${id?`<button class="btn sec" onclick="DB.press.splice(DB.press.findIndex(x=>x.id===${id}),1);save();closeO();render();toast('Contatto eliminato')">Elimina contatto</button>`:''}<button class="btn gray" onclick="closeO()">Annulla</button>`)}
+function pSave(id){const v=i=>$(i).value.trim(),em=v('p_em');if(!v('p_te')||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em))return toast('Servono testata ed email valida');
+  if(DB.press.some(p=>p.email.toLowerCase()===em.toLowerCase()&&p.id!==id))return toast('Email già presente in rubrica');
+  const d={testata:v('p_te'),nome:v('p_no')||'Redazione',email:em,tel:v('p_tl'),liste:[...document.querySelectorAll('.p_li:checked')].map(x=>DB.liste[+x.value]),attivo:$('p_at').checked};
+  if(id)Object.assign(DB.press.find(x=>x.id===id),d);else DB.press.push(Object.assign(d,{id:++DB.seq.press}));save();closeO();render();toast('Contatto salvato')}
+function newLista(){showSheet(`<h2>Nuova lista</h2><label>Nome *</label><input id="nl" placeholder="es. Testate del litorale"><button class="btn" onclick="const v=$('nl').value.trim();if(!v)return;if(!DB.liste.includes(v))DB.liste.push(v);save();closeO();S.rubL=v;render();toast('Lista creata')">Crea</button><button class="btn gray" onclick="closeO()">Annulla</button>`)}
+function impCsv(inp){const f=inp.files[0];inp.value='';if(!f)return;const rd=new FileReader();rd.onload=()=>{let n=0;String(rd.result).replace(/^﻿/,'').split(/\r?\n/).forEach(line=>{const c=line.split(/[;,](?=(?:[^"]*"[^"]*")*[^"]*$)/).map(x=>x.replace(/^"|"$/g,'').replace(/""/g,'"').trim());if(c.length<3||!/@/.test(c[2]))return;if(DB.press.some(p=>p.email.toLowerCase()===c[2].toLowerCase()))return;const ls=(c[3]||'').split('|').map(x=>x.trim()).filter(Boolean);ls.forEach(l=>{if(!DB.liste.includes(l))DB.liste.push(l)});DB.press.push({id:++DB.seq.press,nome:c[0]||'Redazione',testata:c[1]||c[2],email:c[2],tel:'',liste:ls,attivo:true});n++});save();render();toast(`${n} contatti importati`)};rd.readAsText(f)}
+function expRub(){saveFile('Rubrica_stampa_CoEm.csv',csv([['nome','testata','email','liste','attivo']].concat(DB.press.map(p=>[p.nome,p.testata,p.email,p.liste.join('|'),p.attivo?'si':'no']))))}
+
+/* =================== eventi interni =================== */
+const canUpEv=()=>isAdm()||cfg().vigiliEventi;
+function vEventi(){
+  const Y=S.evY,years=[...new Set([new Date().getFullYear(),...DB.evs.map(e=>D(e.dt).getFullYear())])].sort((a,b)=>b-a);
+  const l=DB.evs.filter(e=>D(e.dt).getFullYear()===Y).sort((a,b)=>b.dt-a.dt);
+  const nF=l.reduce((n,e)=>n+e.media.filter(m=>m.type==='img').length,0),nV=l.reduce((n,e)=>n+e.media.filter(m=>m.type==='video').length,0);
+  return `<h2>Eventi interni</h2><div class="card"><div class="chips">${years.map(y=>`<button class="chip ${y===Y?'on':''}" onclick="S.evY=${y};render()">${y}</button>`).join('')}</div>
+  <div class="tot" style="margin-top:12px"><div><b>${l.length}</b><span class="muted">eventi</span></div><div><b>${nF}</b><span class="muted">foto</span></div><div><b>${nV}</b><span class="muted">video</span></div></div>
+  ${isAdm()?'<button class="btn" onclick="evEdit(0)">+ Nuovo evento</button>':''}</div>`+
+  (l.length?l.map(e=>{const c=e.media.find(m=>m.type==='img'&&murl(m));return `<div class="card rep" onclick="openV('ev',${e.id})">${c?`<div class="cover"><img src="${murl(c)}" alt=""></div>`:''}<div class="row"><b>${esc(e.titolo)}</b><span class="sp"></span>${e.minori&&!e.lib?'<span class="badge b-urg">⚠️ liberatorie</span>':''}</div><div class="muted" style="margin-top:4px">${fd(e.dt)} · ${esc(e.tipo)} · ${esc(e.luogo)}</div><div class="muted" style="margin-top:4px">📷 ${e.media.filter(m=>m.type==='img').length} · 🎬 ${e.media.filter(m=>m.type==='video').length}</div></div>`}).join(''):'<div class="card muted">Nessun evento in questo anno.</div>');
+}
+function evEdit(id){const e=id?DB.evs.find(x=>x.id===id):{titolo:'',tipo:cfg().evt[0],dt:Date.now(),luogo:'',sede:cfg().sedi[0],desc:'',minori:false,lib:false};
+  showSheet(`<h2>${id?'Modifica evento':'Nuovo evento'}</h2><label>Titolo *</label><input id="e_t" value="${esc(e.titolo)}" placeholder="es. Festa di Santa Barbara 2026">
+  <label>Tipo</label><select id="e_ty">${opts(cfg().evt,e.tipo)}</select><label>Data</label><input id="e_d" type="date" value="${ymd(D(e.dt))}">
+  <label>Luogo</label><input id="e_l" value="${esc(e.luogo)}" placeholder="es. Sede Centrale, Caserta"><label>Sede organizzatrice</label><select id="e_s">${opts(cfg().sedi,e.sede)}</select>
+  <label>Descrizione</label><textarea id="e_ds" style="min-height:80px">${esc(e.desc)}</textarea>
+  <div class="checks"><label><input type="checkbox" id="e_mi" ${e.minori?'checked':''}> Nelle foto/video compaiono minori</label><label><input type="checkbox" id="e_lb" ${e.lib?'checked':''}> Liberatorie acquisite (genitori/scuola)</label></div>
+  <button class="btn" onclick="evSave(${id})">${id?'Salva':'Crea evento'}</button><button class="btn gray" onclick="closeO()">Annulla</button>`)}
+function evSave(id){const t=$('e_t').value.trim();if(!t)return toast('Inserisci il titolo');const d={titolo:t,dt:parse($('e_d').value||ymd(new Date())).getTime()+10*36e5,tipo:$('e_ty').value,luogo:$('e_l').value.trim(),sede:$('e_s').value,desc:$('e_ds').value.trim(),minori:$('e_mi').checked,lib:$('e_lb').checked};
+  if(id){Object.assign(DB.evs.find(x=>x.id===id),d);save();closeO();render();return toast('Evento aggiornato')}
+  const e=Object.assign(d,{id:++DB.seq.ev,autore:ME().cognome,media:[]});DB.evs.push(e);save();closeO();S.evY=D(e.dt).getFullYear();openV('ev',e.id);toast('Evento creato: ora aggiungi foto e video')}
+function vEv(id){
+  const e=DB.evs.find(x=>x.id===id);if(!e)return '<div class="card">Evento non trovato.</div>';const f=e.media.filter(m=>m.type==='img').length,v=e.media.length-f,adm=isAdm();
+  return `<div class="card"><h3 style="font-size:17px">${esc(e.titolo)}</h3><div class="kv"><div>Data</div><div>${fdl(e.dt)}</div><div>Tipo</div><div>${esc(e.tipo)}</div><div>Luogo</div><div>${esc(e.luogo)||'—'}</div><div>Sede</div><div>${esc(e.sede)}</div><div>Creato da</div><div>${esc(e.autore)}</div></div>${e.desc?`<p style="margin:12px 0 0">${esc(e.desc)}</p>`:''}
+  ${e.minori&&!e.lib?'<div class="warn">⚠️ Sono presenti minori e le liberatorie non risultano acquisite: non pubblicare né inviare alla stampa queste foto.</div>':e.minori?'<div class="ok">✅ Minori presenti, liberatorie acquisite.</div>':''}${adm?`<button class="btn gray" onclick="evEdit(${e.id})">✏️ Modifica evento e privacy</button>`:''}</div>
+  <div class="card"><h3>Foto ${f} · Video ${v}</h3><div class="photos">${e.media.map((m,i)=>tile(m,`evView(${e.id},${i})`)).join('')}</div>
+  ${canUpEv()?`<label>Aggiungi foto e video</label><input type="file" accept="image/*,video/*" multiple onchange="evAdd(${e.id},this)">`:''}<p class="muted" style="margin-bottom:0">Tocca un file per vederlo${adm?', segnarlo come non pubblicabile o eliminarlo':''}.</p></div>
+  ${adm?`<div class="card" style="padding-top:2px"><button class="btn" onclick="comEditor({ev:${e.id}})">📰 Crea comunicato da questo evento</button><button class="btn gray" onclick="zipMedia(DB.evs.find(x=>x.id===${e.id}).media,'Evento_${e.id}.zip')">⬇️ Scarica tutto (ZIP)</button><button class="btn sec" onclick="delEv(${e.id})">Elimina evento</button></div>`:''}`;
+}
+function evView(id,i){const e=DB.evs.find(x=>x.id===id),m=e.media[i],adm=isAdm(),mine=m.by===ME().cognome;showFull(m,`${adm?`<button onclick="event.stopPropagation();evPub(${id},${i})">${m.pub===false?'✅ Pubblicabile':'🚫 Non pubblicabile'}</button>`:''}${adm||mine?`<button onclick="event.stopPropagation();evDelM(${id},${i})">🗑</button>`:''}`)}
+function evPub(id,i){const m=DB.evs.find(x=>x.id===id).media[i];m.pub=m.pub===false;save();closeO();render();toast(m.pub?'Segnata come pubblicabile':'Segnata come non pubblicabile')}
+function evDelM(id,i){DB.evs.find(x=>x.id===id).media.splice(i,1);save();closeO();render();toast('File eliminato')}
+async function evAdd(id,inp){const fs=[...inp.files];inp.value='';if(!fs.length)return;toast('Caricamento…');const e=DB.evs.find(x=>x.id===id),l=await addFiles(fs);if(e.minori&&!e.lib)l.forEach(m=>m.pub=false);e.media.push(...l);if(!isAdm())notify(admins(),`📷 ${ME().cognome} ha caricato ${l.length} file nell'evento “${e.titolo}”`,{k:'ev',id});save();render();toast(`${l.length} file aggiunti`)}
+function delEv(id){showSheet(`<h2>Eliminare l'evento?</h2><p>Verranno eliminati anche tutte le foto e i video.</p><button class="btn" onclick="DB.evs.splice(DB.evs.findIndex(x=>x.id===${id}),1);save();closeO();back();toast('Evento eliminato')">Elimina</button><button class="btn gray" onclick="closeO()">Annulla</button>`)}
+
+/* =================== altro, profilo, utenti, impostazioni, notifiche =================== */
+function vAltro(){
+  if(!isAdm())return vProf();
+  const att=DB.users.filter(u=>u.stato==='In attesa').length,c=unreadN();
+  const it=(i,t,a,b)=>`<div class="li" onclick="${a}"><span class="i">${i}</span><span class="sp">${t}</span>${b?`<span class="unr">${b}</span>`:''}<span class="muted">›</span></div>`;
+  return `<h2>Altro</h2><div class="card menu">${it('👤','Il mio profilo',"openV('prof')")}${it('👥','Utenti',"openV('users')",att)}${it('🔔','Notifiche',"openV('notif')",c)}${it('📇','Rubrica stampa',"S.comSeg='rub';go('com')")}${it('⚙️','Impostazioni app',"openV('impost')")}</div>
+  <div class="card menu">${it('🔄','Ripristina dati dimostrativi',"resetDemo()")}${it('🚪','Esci',"logout()")}</div><div class="demo">Versione dimostrativa: dati salvati solo su questo dispositivo.</div>`;
+}
+function vProf(){
+  const m=ME(),y=new Date().getFullYear(),sp=ferieSp(m.u,y);
+  return `<h2>Profilo</h2><div class="card"><div class="kv"><div>Username</div><div>${esc(m.u)}</div><div>Nome</div><div>${esc(m.cognome.toUpperCase())} ${esc(m.nome)}</div><div>Matricola</div><div>${esc(m.matricola)}</div><div>Email</div><div>${esc(m.email)||'—'}</div><div>Ruolo app</div><div>${RUOLI[m.ruolo]}</div></div></div>
+  <div class="card"><h3>Dati di servizio</h3>
+  <label>Qualifica</label><select id="p_q">${opts(cfg().qual,m.qual)}</select>
+  <label>Sede di servizio</label><select id="p_s">${opts(cfg().sedi,m.sede)}</select>
+  <label>Turno</label><select id="p_t">${opts(TURNI,m.turno)}</select>
+  <label>Gruppo di salto programmato</label><select id="p_sal"><option value="">Non previsto</option>${SALTI.map(n=>`<option value="${n}" ${n===m.salto?'selected':''}>${n}</option>`).join('')}</select>
+  <label>Telefono</label><input id="p_tel" type="tel" value="${esc(m.tel)}">
+  <label>Ferie spettanti ${y} (turni)</label><div class="row"><input id="p_fd" type="number" min="0" value="${sp.d}" placeholder="Diurni"><input id="p_fn" type="number" min="0" value="${sp.n}" placeholder="Notturni"></div><div class="muted" style="margin-top:4px">Diurni · Notturni</div>
+  <button class="btn" onclick="saveProf()">Salva modifiche</button></div>
+  ${m.storico.length?`<div class="card"><h3>Storico cambi</h3>${m.storico.slice().reverse().map(s=>`<div class="li"><span class="muted">${fd(s.t)}</span> ${esc(s.text)}</div>`).join('')}</div>`:''}
+  <div class="card"><button class="btn gray" style="margin-top:0" onclick="pwSheet()">🔑 Cambia password</button>${isAdm()?'':'<button class="btn gray" onclick="resetDemo()">🔄 Ripristina dati dimostrativi</button>'}<button class="btn gray" onclick="delReq()">Richiedi cancellazione account</button><button class="btn sec" onclick="logout()">Esci</button></div>
+  ${isAdm()?'':'<div class="demo">Versione dimostrativa: dati salvati solo su questo dispositivo.</div>'}`;
+}
+function saveProf(){
+  const m=ME(),n={qual:$('p_q').value,sede:$('p_s').value,turno:$('p_t').value,salto:+$('p_sal').value||null,tel:$('p_tel').value.trim()};
+  [['qual','Qualifica'],['sede','Sede'],['turno','Turno'],['salto','Gruppo salto']].forEach(([k,l])=>{if((m[k]||null)!==(n[k]||null))m.storico.push({t:Date.now(),text:`${l}: ${m[k]||'nessuno'} → ${n[k]||'nessuno'}`})});
+  Object.assign(m,n);(DB.ferie[m.u]=DB.ferie[m.u]||{})[new Date().getFullYear()]={d:+$('p_fd').value||0,n:+$('p_fn').value||0};
+  S.viewTurno=null;S.viewSal=null;save();render();toast('Profilo aggiornato')}
+function pwSheet(){showSheet(`<h2>Cambia password</h2><label>Password attuale</label><input id="pw0" type="password"><label>Nuova password (almeno 8 caratteri)</label><input id="pw1" type="password"><label>Conferma nuova password</label><input id="pw2" type="password"><div id="pwe"></div><button class="btn" onclick="pwSave()">Salva</button><button class="btn gray" onclick="closeO()">Annulla</button>`)}
+function pwSave(){const m=ME(),e=t=>$('pwe').innerHTML=`<div class="err">${t}</div>`;if($('pw0').value!==m.pw)return e('La password attuale non è corretta.');if($('pw1').value.length<8)return e('Almeno 8 caratteri.');if($('pw1').value!==$('pw2').value)return e('Le password non coincidono.');m.pw=$('pw1').value;save();closeO();toast('Password aggiornata')}
+function delReq(){showSheet(`<h2>Cancellare l'account?</h2><p>La richiesta arriva a Co.Em., che cancellerà il tuo account e i tuoi dati personali.</p><button class="btn" onclick="notify(admins(),'🗑 '+ME().cognome+' '+ME().nome+' chiede la cancellazione dell\\'account',{k:'users'});closeO();toast('Richiesta inviata')">Invia richiesta</button><button class="btn gray" onclick="closeO()">Annulla</button>`)}
+function resetDemo(){showSheet(`<h2>Ripristinare i dati dimostrativi?</h2><p>Tutto quello che hai inserito su questo dispositivo (segnalazioni, comunicati, eventi, foto, annotazioni) verrà cancellato.</p><button class="btn" onclick="idbClear();DB=seed();save();closeO();logout();toast('Dati ripristinati')">Ripristina</button><button class="btn gray" onclick="closeO()">Annulla</button>`)}
+function userList(){const f=S.uf,q=f.q.trim().toLowerCase();
+  const l=DB.users.filter(u=>(!f.sede||u.sede===f.sede)&&(!f.turno||u.turno===f.turno)&&(!f.stato||u.stato===f.stato)&&(!q||(u.cognome+' '+u.nome+' '+u.matricola+' '+u.u).toLowerCase().includes(q))).sort((a,b)=>((b.stato==='In attesa')-(a.stato==='In attesa'))||a.cognome.localeCompare(b.cognome));
+  return `<p class="muted" style="margin:0 0 8px">${l.length} utenti</p><div class="card">`+l.map(u=>`<div class="li" style="align-items:flex-start;flex-direction:column;gap:6px">
+  <div class="row" style="width:100%"><b>${esc(u.cognome.toUpperCase())} ${esc(u.nome)}</b><span class="sp"></span>${u.stato==='In attesa'?'<span class="badge b-attesa">In attesa</span>':badge(u.stato)}${u.ruolo!=='utente'?` <span class="badge b-In">${u.ruolo==='comandante'?'Comandante':'Admin'}</span>`:''}</div>
+  <div class="muted">${esc(u.qual)} · Matr. ${esc(u.matricola)} · ${esc(sedeS(u.sede))} · ${u.turno==='Giornaliero'?'Giornaliero':'Turno '+esc(u.turno)+(u.salto?'/'+u.salto:'')}</div>
+  ${u.u===S.me?'':`<div class="row">${u.stato==='In attesa'?`<button class="btn sm green" onclick="setU('${u.u}','Attivo')">✓ Approva</button><button class="btn sm gray" onclick="rifiuta('${u.u}')">Rifiuta</button>`:u.stato==='Attivo'?`<button class="btn sm gray" onclick="setU('${u.u}','Bloccato')">Blocca</button>`:`<button class="btn sm gray" onclick="setU('${u.u}','Attivo')">Sblocca</button>`}<button class="btn sm gray" onclick="uEdit('${u.u}')">✏️ Modifica</button></div>`}</div>`).join('')+'</div>'}
+function vUsers(){const f=S.uf,ref="$('ulist').innerHTML=userList()";
+  return `<h2>Utenti</h2><div class="card"><input placeholder="🔍 Cerca nome o matricola…" value="${esc(f.q)}" oninput="S.uf.q=this.value;${ref}">
+  <div class="row" style="margin-top:8px"><select onchange="S.uf.sede=this.value;${ref}"><option value="">Tutte le sedi</option>${cfg().sedi.map(s=>`<option value="${esc(s)}" ${s===f.sede?'selected':''}>${esc(sedeC(s))}</option>`).join('')}</select><select onchange="S.uf.turno=this.value;${ref}"><option value="">Tutti i turni</option>${TURNI.map(t=>`<option ${t===f.turno?'selected':''}>${t}</option>`).join('')}</select></div>
+  <select style="margin-top:8px" onchange="S.uf.stato=this.value;${ref}"><option value="">Tutti gli stati</option>${['In attesa','Attivo','Bloccato'].map(s=>`<option ${s===f.stato?'selected':''}>${s}</option>`).join('')}</select></div><div id="ulist">${userList()}</div>`}
+function setU(x,s){const u=U(x);u.stato=s;if(s==='Attivo')notify(x,'✅ Il tuo account Co.Em. è stato approvato. Benvenuto!',null);save();render();toast(s==='Attivo'?'Utente attivo: riceve una notifica':'Utente bloccato')}
+function rifiuta(x){DB.users.splice(DB.users.indexOf(U(x)),1);save();render();toast('Richiesta rifiutata')}
+function uEdit(x){const u=U(x);showSheet(`<h2>${esc(u.cognome.toUpperCase())} ${esc(u.nome)}</h2><label>Matricola</label><input id="ue_m" value="${esc(u.matricola)}"><label>Qualifica</label><select id="ue_q">${opts(cfg().qual,u.qual)}</select><label>Sede</label><select id="ue_s">${opts(cfg().sedi,u.sede)}</select><label>Turno</label><select id="ue_t">${opts(TURNI,u.turno)}</select><label>Gruppo salto</label><select id="ue_g"><option value="">Nessuno</option>${SALTI.map(n=>`<option value="${n}" ${n===u.salto?'selected':''}>${n}</option>`).join('')}</select>
+  <label>Ruolo nell'app</label><select id="ue_r">${Object.entries(RUOLI).map(([k,v])=>`<option value="${k}" ${k===u.ruolo?'selected':''}>${v}</option>`).join('')}</select><p class="muted">Il Comandante approva i comunicati prima dell'invio alla stampa.</p>
+  <button class="btn" onclick="uSave('${x}')">Salva</button><button class="btn sec" onclick="closeO();rifiuta('${x}')">Elimina account</button><button class="btn gray" onclick="closeO()">Annulla</button>`)}
+function uSave(x){const u=U(x),n={matricola:$('ue_m').value.trim().toUpperCase(),qual:$('ue_q').value,sede:$('ue_s').value,turno:$('ue_t').value,salto:+$('ue_g').value||null,ruolo:$('ue_r').value};if(n.ruolo!==u.ruolo)notify(x,`🔐 Il tuo ruolo nell'app ora è: ${RUOLI[n.ruolo]}`,null);
+  [['sede','Sede'],['turno','Turno'],['qual','Qualifica'],['ruolo','Ruolo']].forEach(([k,l])=>{if(u[k]!==n[k])u.storico.push({t:Date.now(),text:`${l}: ${u[k]} → ${n[k]} (da ${ME().cognome})`})});Object.assign(u,n);save();closeO();render();toast('Utente aggiornato')}
+function vNotif(){const l=myNotifs().slice().reverse();
+  return `<div class="row"><h2 class="sp">Notifiche</h2>${l.some(n=>!n.read)?'<button class="btn sm gray" onclick="myNotifs().forEach(n=>n.read=true);save();render()">Segna tutte lette</button>':''}</div>`+(l.length?`<div class="card">${l.map(n=>`<div class="li rep" onclick="openNotif(${n.id})" style="align-items:flex-start;${n.read?'opacity:.6':''}">${n.read?'':'<span style="width:9px;height:9px;border-radius:50%;background:#e53935;flex:none;margin-top:5px"></span>'}<div class="sp"><div style="${n.read?'':'font-weight:700'}">${esc(n.text)}</div><div class="muted">${rel(n.t)}</div></div></div>`).join('')}</div>`:'<div class="card muted">Nessuna notifica.</div>')}
+function vImpost(){
+  const c=cfg(),box=(k,t)=>`<div class="card"><h3>${t}</h3>${c[k].map((x,i)=>`<div class="li"><span class="sp">${esc(x)}</span><button class="x" onclick="rmItem('${k}',${i})">✕</button></div>`).join('')}<div class="row" style="margin-top:8px"><input id="add_${k}" placeholder="Aggiungi…"><button class="btn sm" onclick="addItem('${k}')">+</button></div></div>`;
+  const [pm,pd]=(c.patrono||'01-20').split('-');
+  return `<h2>Impostazioni</h2>
+  <div class="card"><h3>Turni e salti</h3><label style="margin-top:0">Giorno in cui il turno A fa il diurno</label><input type="date" value="${c.refDate}" onchange="if(this.value){cfg().refDate=this.value;save();toast('Turnario ricalcolato per tutti')}">
+  <label>In quel ciclo è in salto il gruppo</label><select onchange="cfg().salRef=+this.value;save();toast('Salti ricalcolati')">${SALTI.map(n=>`<option ${n===c.salRef?'selected':''}>${n}</option>`).join('')}</select>
+  <label>Inizio turno diurno</label><select onchange="cfg().oD=+this.value;save();toast('Orari aggiornati')">${[6,7,8,9].map(h=>`<option value="${h}" ${h===c.oD?'selected':''}>${pad(h)}:00 (notturno dalle ${pad(h+12)}:00)</option>`).join('')}</select>
+  <p class="muted" style="margin-bottom:0">Tarato sull'app Turnario VVF: 04/11/2026 diurno A3, notturno D2.</p></div>
+  <div class="card"><h3>Festa patronale</h3><div class="row"><select id="pp_d">${Array.from({length:31},(_,i)=>`<option ${i+1===+pd?'selected':''}>${pad(i+1)}</option>`).join('')}</select><select id="pp_m">${MESIL.map((m,i)=>`<option value="${pad(i+1)}" ${i+1===+pm?'selected':''}>${m}</option>`).join('')}</select></div><input id="pp_n" style="margin-top:8px" value="${esc(c.patronoNome)}" placeholder="Nome del santo"><button class="btn sm" style="margin-top:8px" onclick="cfg().patrono=$('pp_m').value+'-'+$('pp_d').value;cfg().patronoNome=$('pp_n').value.trim();save();toast('Festa patronale salvata')">Salva</button></div>
+  <div class="card"><h3>Ferie spettanti di default</h3><div class="row"><input type="number" min="0" value="${c.ferieD}" onchange="cfg().ferieD=+this.value;save()"><input type="number" min="0" value="${c.ferieN}" onchange="cfg().ferieN=+this.value;save()"></div><div class="muted" style="margin-top:4px">Turni diurni · notturni all'anno (ognuno può cambiarli nel profilo)</div></div>
+  <div class="card"><h3>Comunicati ed eventi</h3><div class="checks"><label><input type="checkbox" ${c.approvazione?'checked':''} onchange="cfg().approvazione=this.checked;save();toast('Salvato')"> Il Comandante deve approvare i comunicati prima dell'invio</label><label><input type="checkbox" ${c.vigiliEventi?'checked':''} onchange="cfg().vigiliEventi=this.checked;save();toast('Salvato')"> I vigili vedono gli eventi e possono caricare foto e video</label></div></div>
+  ${box('sedi','Sedi')}${box('qual','Qualifiche')}${box('tipi','Tipologie di intervento')}${box('evt','Tipi di evento')}
+  <p class="muted">Per rinominare una voce in uso conviene aggiungerne una nuova: le segnalazioni già inviate conservano il nome originale.</p>`;
+}
+function addItem(k){const v=$('add_'+k).value.trim();if(!v)return;cfg()[k].push(v);save();render();toast('Aggiunto')}
+function rmItem(k,i){const v=cfg()[k][i];if(k==='sedi'&&DB.users.some(u=>u.sede===v))return toast('Sede in uso da alcuni utenti: spostali prima');cfg()[k].splice(i,1);save();render();toast('Rimosso')}
+
+const VIEWS={turni:vTurni,segnala:vSegnala,mie:vMie,eventi:vEventi,altro:vAltro,adm:vAdm,com:vCom};
+const DET={rep:vRep,com:vComD,ev:vEv,notif:vNotif,users:vUsers,impost:vImpost,prof:vProf};
+
+/* =================== app installabile (PWA) =================== */
+try{if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
+
+/* =================== avvio =================== */
+DB=load();
+render();
+(async()=>{const t0=Date.now();idb=await idbOpen();await idbAll();await new Promise(r=>setTimeout(r,Math.max(0,900-(Date.now()-t0))));S.splash=false;const u=sess&&U(sess);if(u&&u.stato==='Attivo')setMe(u);else render()})();
+</script>
+</body>
+</html>
